@@ -10,7 +10,7 @@
     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <h2 class="text-xl font-bold text-[#003366]">مديرو المراكز</h2>
 
-        <a href="{{ route('admin.managers.create') }}"
+        <a href="{{ route('centerManagers.create') }}"
            class="flex items-center gap-2 rounded-lg bg-[#1E90FF] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#0077E6]">
             <span class="material-symbols-outlined">add</span>
             إضافة مدير مركز جديد
@@ -42,12 +42,14 @@
                     </td>
 
                     <td class="flex items-center gap-2 px-6 py-4">
-                        <a href="{{ route('admin.managers.edit', $manager) }}"
+                        <a href="{{ route('centerManagers.edit', $manager) }}"
                            class="p-2 text-gray-500 hover:text-[#0077E6]">
                             <span class="material-symbols-outlined text-xl">edit</span>
                         </a>
 
-                        <form action="{{ route('admin.managers.destroy', $manager) }}" method="POST" onsubmit="return confirm('هل أنت متأكد؟');">
+                        <form action="{{ route('centerManagers.destroy', $manager) }}" 
+                              method="POST" 
+                              onsubmit="return confirm('هل أنت متأكد؟');">
                             @csrf
                             @method('DELETE')
                             <button class="p-2 text-gray-500 hover:text-red-500">
