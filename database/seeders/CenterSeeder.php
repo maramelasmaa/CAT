@@ -9,42 +9,27 @@ class CenterSeeder extends Seeder
 {
     public function run(): void
     {
+        $logo = 'images/cat-logo.png'; // path in public folder
+
         $centers = [
-            ['name' => 'مركز المعرفة للتدريب', 'location' => 'شارع دبي – بنغازي', 'phone' => '0923456789', 'description' => 'دورات مهنية وتقوية الطلاب.', 'image' => null],
-            ['name' => 'أكاديمية المستقبل', 'location' => 'الفويهات – بنغازي', 'phone' => '0912233445', 'description' => 'دورات تقنية ولغات وبرمجة.', 'image' => null],
-            ['name' => 'معهد النجاح', 'location' => 'الهواري – بنغازي', 'phone' => '0945566778', 'description' => 'إدارة ومحاسبة ودعم فني.', 'image' => null],
-            ['name' => 'أكاديمية المهارات الحديثة', 'location' => 'البركة – بنغازي', 'phone' => '0930099887', 'description' => 'مهارات شخصية وتصميم وتقنية.', 'image' => null],
-            ['name' => 'مركز الريادة للتدريب', 'location' => 'الحدائق – بنغازي', 'phone' => '0914567890', 'description' => 'كورسات إدارة وريادة أعمال.', 'image' => null],
-            ['name' => 'مركز القمة للتطوير', 'location' => 'قاريونس – بنغازي', 'phone' => '0927733110', 'description' => 'مركز تطوير إداري وتقني.', 'image' => null],
-            ['name' => 'أكاديمية أفق المعرفة', 'location' => 'بنينا – بنغازي', 'phone' => '0947711188', 'description' => 'دورات تقوية وتدريب مهني.', 'image' => null],
-            ['name' => 'مركز الرؤية الحديثة', 'location' => 'شارع عشرين – بنغازي', 'phone' => '0918877665', 'description' => 'كورسات لغات وبرمجة.', 'image' => null],
-            ['name' => 'أكاديمية الخبراء', 'location' => 'الليثي – بنغازي', 'phone' => '0932288440', 'description' => 'دورات مهنية متقدمة.', 'image' => null],
-            ['name' => 'مركز التطوير الشامل', 'location' => 'بوعطني – بنغازي', 'phone' => '0913344556', 'description' => 'دورات شاملة في عدة مجالات.', 'image' => null],
-
-            ['name' => 'مركز الإبداع للتدريب', 'location' => 'السلماني – بنغازي', 'phone' => '0926677889', 'description' => 'تصميم، فوتوشوب، مونتاج.', 'image' => null],
-            ['name' => 'أكاديمية النور', 'location' => 'البركة – بنغازي', 'phone' => '0912223344', 'description' => 'لغات وإنجليزي.', 'image' => null],
-            ['name' => 'مركز النهضة', 'location' => 'حي السلام – بنغازي', 'phone' => '0943344556', 'description' => 'كورسات محاسبة.', 'image' => null],
-            ['name' => 'أكاديمية الرابطة', 'location' => 'الكيش – بنغازي', 'phone' => '0929988776', 'description' => 'كورسات إدارة.', 'image' => null],
-            ['name' => 'مركز التطوير الذهبي', 'location' => 'الصابري – بنغازي', 'phone' => '0915667788', 'description' => 'كورسات احترافية.', 'image' => null],
-            ['name' => 'مركز المبدعون', 'location' => 'الكويفية – بنغازي', 'phone' => '0924455667', 'description' => 'دورات أشغال يدوية.', 'image' => null],
-            ['name' => 'أكاديمية أجيال', 'location' => 'السرتي – بنغازي', 'phone' => '0948899001', 'description' => 'دورات أطفال وتعليم.', 'image' => null],
-            ['name' => 'مركز براعم المستقبل', 'location' => 'الهواري – بنغازي', 'phone' => '0916655443', 'description' => 'دورات أطفال ولغات.', 'image' => null],
-            ['name' => 'مركز التطوير التقني', 'location' => 'قنفودة – بنغازي', 'phone' => '0937755332', 'description' => 'كورسات تقنية.', 'image' => null],
-            ['name' => 'أكاديمية التميز', 'location' => 'شارع عشرين – بنغازي', 'phone' => '0927788990', 'description' => 'لغات، برمجة، تصميم.', 'image' => null],
-
-            ['name' => 'معهد الشرق الأوسط', 'location' => 'الفويهات – بنغازي', 'phone' => '0946677884', 'description' => 'دورات اقتصادية.', 'image' => null],
-            ['name' => 'مركز الريادة الذكية', 'location' => 'الحدائق – بنغازي', 'phone' => '0912233990', 'description' => 'تقنية وإدارة.', 'image' => null],
-            ['name' => 'أكاديمية العالمية', 'location' => 'الليثي – بنغازي', 'phone' => '0931122334', 'description' => 'لغات ومهارات.', 'image' => null],
-            ['name' => 'مركز الطموح', 'location' => 'السلماني – بنغازي', 'phone' => '0928877660', 'description' => 'كورسات تطوير ذات.', 'image' => null],
-            ['name' => 'مركز الرقي', 'location' => 'المدينة الرياضية – بنغازي', 'phone' => '0919988776', 'description' => 'دورات احترافية متنوعة.', 'image' => null],
+            ['name' => 'مركز بنغازي التعليمي', 'location' => 'بنغازي', 'phone' => '061-1234567', 'bank_account' => '1234567890', 'image' => $logo],
+            ['name' => 'مركز طرابلس التقني', 'location' => 'طرابلس', 'phone' => '021-2345678', 'bank_account' => '2345678901', 'image' => $logo],
+            ['name' => 'مركز سبها التعليمي', 'location' => 'سبها', 'phone' => '047-3456789', 'bank_account' => '3456789012', 'image' => $logo],
+            ['name' => 'مركز مصراتة التعليمي', 'location' => 'مصراتة', 'phone' => '051-4567890', 'bank_account' => '4567890123', 'image' => $logo],
+            ['name' => 'مركز الزاوية التقني', 'location' => 'الزاوية', 'phone' => '013-5678901', 'bank_account' => '5678901234', 'image' => $logo],
+            ['name' => 'مركز البيضاء التعليمي', 'location' => 'البيضاء', 'phone' => '065-6789012', 'bank_account' => '6789012345', 'image' => $logo],
+            ['name' => 'مركز زليتن التعليمي', 'location' => 'زليتن', 'phone' => '062-7890123', 'bank_account' => '7890123456', 'image' => $logo],
+            ['name' => 'مركز صبراته التعليمي', 'location' => 'صبراته', 'phone' => '014-8901234', 'bank_account' => '8901234567', 'image' => $logo],
+            ['name' => 'مركز غريان التقني', 'location' => 'غريان', 'phone' => '012-9012345', 'bank_account' => '9012345678', 'image' => $logo],
+            ['name' => 'مركز ترهونة التعليمي', 'location' => 'ترهونة', 'phone' => '015-0123456', 'bank_account' => '0123456789', 'image' => $logo],
+            ['name' => 'مركز جادو التعليمي', 'location' => 'جادو', 'phone' => '016-1234567', 'bank_account' => '1234567890', 'image' => $logo],
+            ['name' => 'مركز رقدالين التقني', 'location' => 'رقدالين', 'phone' => '017-2345678', 'bank_account' => '2345678901', 'image' => $logo],
+            ['name' => 'مركز صرمان التعليمي', 'location' => 'صرمان', 'phone' => '018-3456789', 'bank_account' => '3456789012', 'image' => $logo],
+            ['name' => 'مركز ترهونة التقني', 'location' => 'ترهونة', 'phone' => '019-4567890', 'bank_account' => '4567890123', 'image' => $logo],
+            ['name' => 'مركز هون التعليمي', 'location' => 'هون', 'phone' => '066-5678901', 'bank_account' => '5678901234', 'image' => $logo],
         ];
 
         foreach ($centers as $center) {
-            // Ensure required non-nullable fields have a value
-            if (!array_key_exists('bank_account', $center)) {
-                $center['bank_account'] = '';
-            }
-
             Center::create($center);
         }
     }

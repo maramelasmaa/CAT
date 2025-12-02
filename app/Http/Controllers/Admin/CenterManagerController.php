@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CenterManagerRequest;
 use App\Models\Center;
 use App\Models\CenterManager;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class CenterManagerController extends Controller
@@ -26,42 +25,50 @@ class CenterManagerController extends Controller
     public function store(CenterManagerRequest $request)
     {
         $data = $request->validated();
-
         $data['password'] = Hash::make($data['password']);
 
         CenterManager::create($data);
 
-        return redirect()->route('admin.managers.index')
+        return redirect()->route('centerManagers.index')
             ->with('success', 'تم إضافة مدير المركز بنجاح');
     }
 
-    public function edit(CenterManager $manager)
+    public function show(CenterManager $center_manager)
+    {
+        return view('Admin.centerManagers.details', [
+            'manager' => $center_manager
+        ]);
+    }
+
+    public function edit(CenterManager $center_manager)
     {
         $centers = Center::all();
 
-        return view('Admin.centerManagers.edit', compact('manager', 'centers'));
+        return view('Admin.centerManagers.edit', [
+            'manager' => $center_manager,
+            'centers' => $centers
+        ]);
     }
 
-    public function update(CenterManagerRequest $request, CenterManager $manager)
+    public function update(CenterManagerRequest $request, CenterManager $center_manager)
     {
         $data = $request->validated();
 
-        // Password is optional during update
         if ($request->password) {
             $data['password'] = Hash::make($request->password);
         }
 
-        $manager->update($data);
+        $center_manager->update($data);
 
-        return redirect()->route('admin.managers.index')
+        return redirect()->route('centerManagers.index')
             ->with('success', 'تم تحديث بيانات مدير المركز بنجاح');
     }
 
-    public function destroy(CenterManager $manager)
+    public function destroy(CenterManager $center_manager)
     {
-        $manager->delete();
+        $center_manager->delete();
 
-        return redirect()->route('admin.managers.index')
+        return redirect()->route('centerManagers.index')
             ->with('success', 'تم حذف مدير المركز بنجاح');
     }
 }

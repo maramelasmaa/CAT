@@ -33,12 +33,8 @@
                 <tr class="border-b hover:bg-gray-50">
 
                     <td class="px-6 py-4">
-                        @if($center->image)
-                            <img src="{{ asset('storage/'.$center->image) }}"
-                                 class="w-10 h-10 rounded-full object-cover">
-                        @else
-                            —
-                        @endif
+                        <img src="{{ asset('images/cat-logo.png') }}"
+                             class="w-10 h-10 rounded-full object-cover">
                     </td>
 
                     <td class="px-6 py-4">{{ $center->name }}</td>

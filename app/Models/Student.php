@@ -10,7 +10,7 @@ class Student extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'phone', 'status', 'center_id'];
 
     protected $hidden = ['password'];
 
@@ -29,5 +29,15 @@ class Student extends Authenticatable
     public function ratings()
     {
         return $this->hasManyThrough(Rating::class, Enrollment::class, 'student_id', 'enrollment_id', 'id', 'id');
+    }
+
+    public function center()
+    {
+        return $this->belongsTo(Center::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

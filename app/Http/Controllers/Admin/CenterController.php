@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CenterRequest;
 use App\Models\Center;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CenterController extends Controller
 {
@@ -24,6 +24,7 @@ class CenterController extends Controller
     {
         $data = $request->validated();
 
+        // Handle image upload
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('centers', 'public');
         }
@@ -32,6 +33,14 @@ class CenterController extends Controller
 
         return redirect()->route('centers.index')
             ->with('success', 'تم إضافة المركز بنجاح');
+    }
+
+    public function show(Center $center)
+    {
+        // Admin should ONLY see center details
+        return view('Admin.centers.details', [
+            'center' => $center
+        ]);
     }
 
     public function edit(Center $center)
@@ -43,7 +52,14 @@ class CenterController extends Controller
     {
         $data = $request->validated();
 
+        // If updating image
         if ($request->hasFile('image')) {
+
+            // Delete old one if exists
+            if ($center->image) {
+                Storage::disk('public')->delete($center->image);
+            }
+
             $data['image'] = $request->file('image')->store('centers', 'public');
         }
 
@@ -55,6 +71,11 @@ class CenterController extends Controller
 
     public function destroy(Center $center)
     {
+        // Delete image if exists
+        if ($center->image) {
+            Storage::disk('public')->delete($center->image);
+        }
+
         $center->delete();
 
         return redirect()->route('centers.index')

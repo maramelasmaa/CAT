@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed centers and center managers for admin panel demo
-        $this->call([
-            CenterSeeder::class,
-            CenterManagerSeeder::class,
-        ]);
+     $this->call([
+        AdminSeeder::class,
+        CenterSeeder::class,
+         CenterManagerSeeder::class,
+     ]);  
     }
 }

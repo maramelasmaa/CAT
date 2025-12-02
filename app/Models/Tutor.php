@@ -9,7 +9,7 @@ class Tutor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'phone', 'specialization', 'center_id'];
+    protected $fillable = ['name', 'email', 'phone', 'specialization', 'center_id'];
 
     public function center()
     {
