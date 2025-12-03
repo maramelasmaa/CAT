@@ -40,15 +40,12 @@ class CenterManagerController extends Controller
         ]);
     }
 
-    public function edit(CenterManager $center_manager)
-    {
-        $centers = Center::all();
+   public function edit(CenterManager $center_manager)
+{
+    $centers = Center::all();
 
-        return view('Admin.centerManagers.edit', [
-            'manager' => $center_manager,
-            'centers' => $centers
-        ]);
-    }
+    return view('Admin.centerManagers.edit', compact('center_manager', 'centers'));
+}
 
     public function update(CenterManagerRequest $request, CenterManager $center_manager)
     {

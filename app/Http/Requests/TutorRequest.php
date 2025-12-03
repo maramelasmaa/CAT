@@ -15,9 +15,9 @@ class TutorRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:50'],
-            'specialization' => ['required', 'string', 'max:255'],
-            'center_id' => ['required', 'integer', 'exists:centers,id'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'specialization' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
+

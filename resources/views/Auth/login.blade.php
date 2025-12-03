@@ -2,13 +2,14 @@
 
 @section('content')
 
-<form action="{{ route('admin.login.post') }}" method="POST" autocomplete="off" class="flex flex-col gap-5 w-full">
-    @csrf
+@if(session('error'))
+    <div class="mb-4 rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700">
+        {{ session('error') }}
+    </div>
+@endif
 
-    {{-- Error message --}}
-    @if(session('error'))
-        <p class="text-red-500 text-sm text-right">{{ session('error') }}</p>
-    @endif
+<form action="{{ route('login.attempt') }}" method="POST" autocomplete="off" class="flex flex-col gap-5 w-full">
+    @csrf
 
     {{-- Email --}}
     <label class="flex flex-col w-full">
@@ -28,7 +29,7 @@
 
     {{-- Submit --}}
     <button type="submit"
-            class="w-full bg-brand-medium-blue text-white py-3 rounded-lg text-lg font-semibold hover:bg-brand-darker-blue transition">
+            class="w-full bg-[#1E90FF] text-white py-3 rounded-lg text-lg font-semibold hover:bg-[#0077E6] transition">
         تسجيل الدخول
     </button>
 </form>

@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tutor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'specialization', 'center_id'];
+    protected $fillable = [
+        'name',
+        'phone',
+        'specialization',
+        'image',
+        'center_id',
+    ];
 
     public function center()
     {

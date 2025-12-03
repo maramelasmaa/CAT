@@ -35,13 +35,11 @@ class CenterController extends Controller
             ->with('success', 'تم إضافة المركز بنجاح');
     }
 
-    public function show(Center $center)
-    {
-        // Admin should ONLY see center details
-        return view('Admin.centers.details', [
-            'center' => $center
-        ]);
-    }
+ public function show(Center $center)
+{
+    return view('Admin.centers.details', compact('center'));
+}
+
 
     public function edit(Center $center)
     {
@@ -71,7 +69,6 @@ class CenterController extends Controller
 
     public function destroy(Center $center)
     {
-        // Delete image if exists
         if ($center->image) {
             Storage::disk('public')->delete($center->image);
         }

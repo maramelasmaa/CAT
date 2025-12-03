@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'price', 'duration',
-        'tutor_id', 'center_id'
+        'title',
+        'description',
+        'schedule',
+        'capacity',
+        'available_seats',
+        'image',
+        'center_id',
+        'tutor_id',
     ];
 
     public function tutor()

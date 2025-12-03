@@ -13,10 +13,14 @@ return [
             'provider' => 'users',
         ],
 
-        // Admin guard
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
+        ],
+
+        'manager' => [
+            'driver' => 'session',
+            'provider' => 'center_managers',
         ],
     ],
 
@@ -30,6 +34,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'center_managers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\CenterManager::class,
         ],
     ],
 

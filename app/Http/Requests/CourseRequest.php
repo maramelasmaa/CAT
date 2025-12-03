@@ -15,12 +15,10 @@ class CourseRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'schedule' => ['required', 'string', 'max:255'],
-            'capacity' => ['required', 'integer', 'min:0'],
-            'available_seats' => ['required', 'integer', 'min:0'],
-            'center_id' => ['required', 'integer', 'exists:centers,id'],
-            'tutor_id' => ['required', 'integer', 'exists:tutors,id'],
+            'description' => ['nullable', 'string'],
+            'schedule' => ['nullable', 'string', 'max:255'],
+            'capacity' => ['required', 'integer', 'min:1'],
+            'tutor_id' => ['required', 'exists:tutors,id'],
         ];
     }
 }
