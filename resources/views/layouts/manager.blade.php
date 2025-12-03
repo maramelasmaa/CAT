@@ -23,10 +23,13 @@
     {{-- SIDEBAR --}}
     <aside class="w-64 bg-[#003366] text-white flex flex-col p-5">
 
-        {{-- Logo --}}
+        {{-- Profile + Greeting --}}
         <div class="flex items-center gap-3 mb-6">
             <img src="{{ asset('images/cat-logo.png') }}" class="w-12 h-12 rounded-full">
-            <h1 class="font-bold text-lg">مدير المركز</h1>
+
+            <p class="text-lg font-bold text-white">
+                أهلاً {{ strtok(auth('manager')->user()->name, ' ') }}
+            </p>
         </div>
 
         {{-- Menu --}}
@@ -77,7 +80,7 @@
 
     </aside>
 
-    {{-- MAIN --}}
+    {{-- MAIN CONTENT --}}
     <main class="flex-1 p-8">
 
         {{-- Page Title --}}

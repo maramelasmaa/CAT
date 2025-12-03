@@ -1,49 +1,55 @@
 @extends('layouts.manager')
 
-@section('title', 'إضافة مدرس')
+@section('title', 'إضافة دورة جديدة')
 
 @section('content')
 
-<div class="rounded-2xl bg-white p-6 shadow-sm max-w-xl">
+<div class="rounded-2xl bg-white p-6 shadow-sm max-w-2xl">
 
-    <form action="{{ route('manager.tutors.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('manager.courses.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
-        <div class="mb-4">
-            <label class="font-medium text-sm">الاسم</label>
-            <input type="text" name="name" class="w-full rounded-lg border-gray-300">
+        <div>
+            <label class="font-medium">اسم الدورة</label>
+            <input type="text" name="title" class="w-full rounded-lg border-gray-300" required>
         </div>
 
-        <div class="mb-4">
-            <label class="font-medium text-sm">الهاتف</label>
-            <input type="text" name="phone" class="w-full rounded-lg border-gray-300">
+        <div>
+            <label class="font-medium">الوصف</label>
+            <textarea name="description" rows="4" class="w-full rounded-lg border-gray-300"></textarea>
         </div>
 
-        <div class="mb-4">
-            <label class="font-medium text-sm">التخصص</label>
-            <input type="text" name="specialization" class="w-full rounded-lg border-gray-300">
+        <div>
+            <label class="font-medium">الجدول</label>
+            <input type="text" name="schedule" class="w-full rounded-lg border-gray-300">
         </div>
 
-        <div class="mb-4">
-            <label class="font-medium text-sm">الصورة</label>
-            <input type="file" name="image" class="w-full rounded-lg border-gray-300" onchange="previewImage(event)">
+        <div>
+            <label class="font-medium">السعة</label>
+            <input type="number" name="capacity" class="w-full rounded-lg border-gray-300" required>
         </div>
 
-        <img id="preview" class="w-28 h-28 rounded-lg object-cover hidden">
+        <div>
+            <label class="font-medium">المدرب</label>
+            <select name="tutor_id" class="w-full rounded-lg border-gray-300" required>
+                <option value="">اختر المدرب</option>
+                @foreach($tutors as $tutor)
+                    <option value="{{ $tutor->id }}">{{ $tutor->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-        <button class="mt-4 w-full bg-[#1E90FF] text-white py-2 rounded-lg">
-            حفظ
+        <div>
+            <label class="font-medium">الصورة (اختياري)</label>
+            <input type="file" name="image" class="w-full rounded-lg border-gray-300">
+        </div>
+
+        <button class="w-full bg-[#1E90FF] text-white py-2.5 rounded-lg hover:bg-[#0077E6]">
+            إضافة الدورة
         </button>
 
     </form>
-</div>
 
-<script>
-function previewImage(event) {
-    const img = document.getElementById('preview');
-    img.src = URL.createObjectURL(event.target.files[0]);
-    img.classList.remove('hidden');
-}
-</script>
+</div>
 
 @endsection

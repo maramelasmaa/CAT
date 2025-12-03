@@ -4,45 +4,68 @@
 
 @section('content')
 
-<div class="rounded-2xl bg-white p-6 shadow-sm">
+<div class="bg-white rounded-2xl shadow-sm p-6">
+
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-[#003366]">قائمة المدربين</h2>
+
+        <a href="{{ route('manager.tutors.create') }}"
+           class="bg-[#1E90FF] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#0077E6]">
+            <span class="material-symbols-outlined">add</span>
+            إضافة مدرب جديد
+        </a>
+    </div>
 
     <table class="w-full text-right">
         <thead>
-            <tr class="border-b">
+            <tr class="border-b text-sm text-gray-600">
                 <th class="py-2">الصورة</th>
                 <th>الاسم</th>
-                <th>التخصص</th>
                 <th>رقم الهاتف</th>
+                <th>التخصص</th>
                 <th>العمليات</th>
             </tr>
         </thead>
 
         <tbody>
             @foreach($tutors as $tutor)
-                <tr class="border-b">
+                <tr class="border-b text-sm">
 
+                    {{-- Image --}}
                     <td class="py-2">
                         @if($tutor->image)
-                            <img src="{{ $tutor->image }}" class="w-12 h-12 rounded-lg object-cover">
+                            <img src="{{ $tutor->image }}" class="w-12 h-12 rounded-full object-cover">
+                        @else
+                            —
                         @endif
                     </td>
 
+                    {{-- Name --}}
                     <td>{{ $tutor->name }}</td>
-                    <td>{{ $tutor->specialization ?? '—' }}</td>
-                    <td>{{ $tutor->phone ?? '—' }}</td>
 
-                    <td class="flex gap-2 py-2">
+                    {{-- Phone --}}
+                    <td>{{ $tutor->phone }}</td>
 
-                        <a href="{{ route('manager.tutors.details', $tutor) }}"
-                           class="text-[#1E90FF]">عرض</a>
+                    {{-- Specialization --}}
+                    <td>{{ $tutor->specialization }}</td>
 
-                        <a href="{{ route('manager.tutors.edit', $tutor) }}"
-                           class="text-green-600">تعديل</a>
+                    {{-- Actions --}}
+                    <td class="flex gap-3 py-2">
+
+                        <a href="{{ route('manager.tutors.details', $tutor) }}" class="text-blue-600">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </a>
+
+                        <a href="{{ route('manager.tutors.edit', $tutor) }}" class="text-green-600">
+                            <span class="material-symbols-outlined">edit</span>
+                        </a>
 
                         <form action="{{ route('manager.tutors.destroy', $tutor) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="text-red-600">حذف</button>
+                            <button class="text-red-600">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
                         </form>
 
                     </td>

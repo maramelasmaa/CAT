@@ -1,11 +1,8 @@
-
 @extends('layouts.manager')
 
 @section('title', 'لوحة التحكم')
 
 @section('content')
-
-<h2 class="text-2xl font-bold text-[#003366] mb-6">لوحة التحكم</h2>
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
 
@@ -40,7 +37,6 @@
 
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -61,16 +57,18 @@ new Chart(capacityCtx, {
     type: 'bar',
     data: {
         labels: {!! json_encode($coursesCapacity->pluck('title')) !!},
-        datasets: [{
-            label: 'السعة الكاملة',
-            data: {!! json_encode($coursesCapacity->pluck('capacity')) !!},
-            backgroundColor: '#1E90FF'
-        },
-        {
-            label: 'المقاعد المتاحة',
-            data: {!! json_encode($coursesCapacity->pluck('available_seats')) !!},
-            backgroundColor: '#003366'
-        }]
+        datasets: [
+            {
+                label: 'السعة الكاملة',
+                data: {!! json_encode($coursesCapacity->pluck('capacity')) !!},
+                backgroundColor: '#1E90FF'
+            },
+            {
+                label: 'المقاعد المتاحة',
+                data: {!! json_encode($coursesCapacity->pluck('available_seats')) !!},
+                backgroundColor: '#003366'
+            }
+        ]
     },
     options: {
         responsive: true,

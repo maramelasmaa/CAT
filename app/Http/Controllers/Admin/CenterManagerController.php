@@ -40,26 +40,31 @@ class CenterManagerController extends Controller
         ]);
     }
 
-   public function edit(CenterManager $center_manager)
-{
-    $centers = Center::all();
-
-    return view('Admin.centerManagers.edit', compact('center_manager', 'centers'));
-}
-
-    public function update(CenterManagerRequest $request, CenterManager $center_manager)
+    public function edit(CenterManager $center_manager)
     {
-        $data = $request->validated();
+        $centers = Center::all();
 
-        if ($request->password) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $center_manager->update($data);
-
-        return redirect()->route('centerManagers.index')
-            ->with('success', 'تم تحديث بيانات مدير المركز بنجاح');
+        return view('Admin.centerManagers.edit', [
+            'manager' => $center_manager,
+            'centers' => $centers
+        ]);
     }
+
+ public function update(CenterManagerRequest $request, CenterManager $center_manager)
+{
+    $data = $request->validated();
+
+    if (!empty($data['password'])) {
+        $data['password'] = Hash::make($data['password']);
+    } else {
+        unset($data['password']);
+    }
+
+    $center_manager->update($data);
+
+    return redirect()->route('centerManagers.index')
+        ->with('success', 'تم تحديث بيانات مدير المركز بنجاح');
+}
 
     public function destroy(CenterManager $center_manager)
     {

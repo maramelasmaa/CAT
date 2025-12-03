@@ -1,21 +1,44 @@
 @extends('layouts.manager')
 
-@section('title', 'تفاصيل الدورة')
+@section('title', 'إضافة مدرب جديد')
 
 @section('content')
 
-<div class="rounded-2xl bg-white p-6 shadow-sm max-w-xl">
+<div class="bg-white p-6 rounded-2xl shadow-sm max-w-xl">
 
-    @if($course->image)
-        <img src="{{ $course->image }}" class="w-32 h-32 rounded-lg object-cover mb-4">
-    @endif
+    <form action="{{ route('manager.tutors.store') }}" method="POST" enctype="multipart/form-data"
+          class="space-y-4">
+        @csrf
 
-    <p class="mb-2"><span class="font-bold">العنوان:</span> {{ $course->title }}</p>
-    <p class="mb-2"><span class="font-bold">الوصف:</span> {{ $course->description }}</p>
-    <p class="mb-2"><span class="font-bold">المدرس:</span> {{ $course->tutor->name }}</p>
-    <p class="mb-2"><span class="font-bold">السعة:</span> {{ $course->capacity }}</p>
-    <p class="mb-2"><span class="font-bold">المقاعد المتاحة:</span> {{ $course->available_seats }}</p>
-    <p class="mb-2"><span class="font-bold">الجدول:</span> {{ $course->schedule }}</p>
+        <div>
+            <label class="font-medium">اسم المدرب</label>
+            <input type="text" name="name" required
+                   class="w-full rounded-lg border-gray-300 mt-1">
+        </div>
+
+        <div>
+            <label class="font-medium">رقم الهاتف</label>
+            <input type="text" name="phone"
+                   class="w-full rounded-lg border-gray-300 mt-1">
+        </div>
+
+        <div>
+            <label class="font-medium">التخصص</label>
+            <input type="text" name="specialization"
+                   class="w-full rounded-lg border-gray-300 mt-1">
+        </div>
+
+        <div>
+            <label class="font-medium">الصورة (اختياري)</label>
+            <input type="file" name="image"
+                   class="w-full rounded-lg border-gray-300 mt-1">
+        </div>
+
+        <button class="w-full bg-[#1E90FF] text-white py-2.5 rounded-lg hover:bg-[#0077E6]">
+            إضافة المدرب
+        </button>
+
+    </form>
 
 </div>
 
