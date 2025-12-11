@@ -44,19 +44,19 @@
                     <td class="px-6 py-4 flex gap-2">
 
                         <a href="{{ route('centers.show', $center) }}"
-                           class="p-2 hover:text-[#1E90FF]">
+                           class="p-2 text-blue-600">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </a>
 
                         <a href="{{ route('centers.edit', $center) }}"
-                           class="p-2 hover:text-[#0077E6]">
+                           class="p-2 text-green-600">
                             <span class="material-symbols-outlined text-xl">edit</span>
                         </a>
 
                         <form action="{{ route('centers.destroy', $center) }}" method="POST" onsubmit="return confirm('هل أنت متأكد؟');">
                             @csrf
                             @method('DELETE')
-                            <button class="p-2 hover:text-red-500">
+                            <button class="p-2 text-red-600">
                                 <span class="material-symbols-outlined text-xl">delete</span>
                             </button>
                         </form>

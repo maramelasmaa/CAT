@@ -13,7 +13,7 @@
 
         {{-- Current Image --}}
         @if($tutor->image)
-            <img src="{{ $tutor->image }}" class="w-32 h-32 rounded-full object-cover mb-4">
+            <img src="{{ asset('storage/' . $tutor->image) }}" class="w-32 h-32 rounded-full object-cover mb-4">
         @endif
 
         <div>

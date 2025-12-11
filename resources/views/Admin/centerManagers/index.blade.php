@@ -44,27 +44,27 @@
                     <td class="flex items-center gap-2 px-6 py-4">
 
                         {{-- Show --}}
-                        <a href="{{ route('centerManagers.show', $manager) }}"
-                           class="p-2 text-gray-500 hover:text-[#003366]">
-                            <span class="material-symbols-outlined text-xl">visibility</span>
-                        </a>
+                                <a href="{{ route('centerManagers.show', $manager) }}"
+                                   class="p-2 text-blue-600">
+                                    <span class="material-symbols-outlined text-xl">visibility</span>
+                                </a>
 
-                        {{-- Edit --}}
-                        <a href="{{ route('centerManagers.edit', $manager) }}"
-                           class="p-2 text-gray-500 hover:text-[#0077E6]">
-                            <span class="material-symbols-outlined text-xl">edit</span>
-                        </a>
+                                {{-- Edit --}}
+                                <a href="{{ route('centerManagers.edit', $manager) }}"
+                                   class="p-2 text-green-600">
+                                    <span class="material-symbols-outlined text-xl">edit</span>
+                                </a>
 
-                        {{-- Delete --}}
-                        <form action="{{ route('centerManagers.destroy', $manager) }}" 
-                              method="POST" 
-                              onsubmit="return confirm('هل أنت متأكد؟');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="p-2 text-gray-500 hover:text-red-500">
-                                <span class="material-symbols-outlined text-xl">delete</span>
-                            </button>
-                        </form>
+                                {{-- Delete --}}
+                                <form action="{{ route('centerManagers.destroy', $manager) }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('هل أنت متأكد؟');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="p-2 text-red-600">
+                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                    </button>
+                                </form>
 
                     </td>
 

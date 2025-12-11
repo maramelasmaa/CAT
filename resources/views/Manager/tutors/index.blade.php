@@ -34,7 +34,7 @@
                     {{-- Image --}}
                     <td class="py-2">
                         @if($tutor->image)
-                            <img src="{{ $tutor->image }}" class="w-12 h-12 rounded-full object-cover">
+                            <img src="{{ asset('storage/' . $tutor->image) }}" class="w-12 h-12 rounded-full object-cover">
                         @else
                             —
                         @endif

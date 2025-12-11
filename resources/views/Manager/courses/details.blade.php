@@ -8,7 +8,7 @@
 
     {{-- Image --}}
     @if($course->image)
-        <img src="{{ $course->image }}" class="w-32 h-32 rounded-lg object-cover mb-4">
+        <img src="{{ asset('storage/' . $course->image) }}" class="w-32 h-32 rounded-lg object-cover mb-4">
     @endif
 
     <p class="mb-2"><span class="font-bold">اسم الدورة:</span> {{ $course->title }}</p>
@@ -24,7 +24,7 @@
 
     @if($course->tutor)
         @if($course->tutor->image)
-            <img src="{{ $course->tutor->image }}" class="w-20 h-20 rounded-full object-cover mb-3">
+            <img src="{{ asset('storage/' . $course->tutor->image) }}" class="w-20 h-20 rounded-full object-cover mb-3">
         @endif
 
         <p class="mb-2"><span class="font-bold">الاسم:</span> {{ $course->tutor->name }}</p>
