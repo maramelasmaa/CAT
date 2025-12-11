@@ -23,10 +23,13 @@ class StudentAuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
+        // Hash password
         $data['password'] = Hash::make($data['password']);
 
+        // Create student user
         $user = User::create($data);
 
+        // Login student
         Auth::login($user);
 
         return redirect()->route('home')->with('success', 'تم إنشاء الحساب بنجاح 🎉');
@@ -34,7 +37,8 @@ class StudentAuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('auth.student-login');
+        // Students do NOT have separate login page → redirect to shared login
+        return redirect()->route('login.form');
     }
 
     public function login(Request $request)
@@ -57,6 +61,7 @@ class StudentAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('student.login');
+        // After logout, student goes to shared login page
+        return redirect()->route('login.form');
     }
 }
