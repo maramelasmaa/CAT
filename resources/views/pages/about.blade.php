@@ -1,44 +1,90 @@
 @extends('layouts.public')
 
-@section('title', 'حول')
+@section('title', 'حول النظام')
 
 @section('content')
-<div class="container py-5">
+
+{{-- القسم الرئيسي --}}
+<section class="py-5" style="background-color: #f4f7fb;">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold" style="color:#003366;">ما هو CAT System؟</h1>
+
+            <p class="lead mt-3 mx-auto" style="max-width:800px; color:#6c757d;">
+                CAT System هو نظام بسيط يساعد الطلاب على إدارة الدورات ومعلومات الحساب 
+                داخل مراكز التدريب بطريقة واضحة وسهلة.
+            </p>
+        </div>
+    </div>
+</section>
+
+{{-- المميزات --}}
+<section class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <header class="text-center mb-5">
-                <i class="bi bi-lightbulb text-primary display-4 mb-3"></i>
-                <h1 class="display-4 fw-bold text-primary">قصة CAT System</h1>
-            </header>
+        
+        {{-- بطاقة 1 --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <h2 class="h4 fw-bold mb-4" style="color:#0056b3;">
+                    ماذا يمكنني أن أفعل داخل النظام؟
+                </h2>
 
-            <div class="card shadow-lg border-0 mb-5">
-                <div class="card-body p-4 p-md-5 text-center">
-                    <h2 class="h3 fw-bold mb-3">الرؤية والهدف</h2>
-                    <p class="lead text-muted">
-                        نظام **CAT System** هو حل متكامل بُني خصيصًا لتمكين المراكز التدريبية من تحقيق أقصى كفاءة في التشغيل. 
-                        هدفنا هو تبسيط عملية إدارة الدورات، تسهيل التواصل بين المدرّبين والطلاب، وتقديم بيئة تعليمية احترافية رقمية بالكامل.
-                    </p>
-                </div>
+                <ul class="list-unstyled" style="color:#333;">
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        التسجيل في الدورات المتاحة.
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        متابعة بيانات حسابك بسهولة.
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        الاطلاع على المدربين والمراكز.
+                    </li>
+                    <li class="mb-2 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        معرفة الدورات التي التحقت بها.
+                    </li>
+                </ul>
             </div>
+        </div>
 
-            <div class="row mt-5 text-center">
-                <div class="col-md-4 mb-4">
-                    <i class="bi bi-check-circle text-primary h2 mb-3"></i>
-                    <h3 class="h5 fw-bold">الاحترافية</h3>
-                    <p class="text-muted">نلتزم بأعلى معايير الجودة في تقديم خدماتنا ومنصتنا.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <i class="bi bi-gem text-primary h2 mb-3"></i>
-                    <h3 class="h5 fw-bold">الابتكار</h3>
-                    <p class="text-muted">نسعى دائمًا لإضافة أحدث الميزات التكنولوجية لخدمة المستخدمين.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <i class="bi bi-people text-primary h2 mb-3"></i>
-                    <h3 class="h5 fw-bold">التركيز على المستخدم</h3>
-                    <p class="text-muted">تصميم المنصة يركز على سهولة الاستخدام وتلبية احتياجات كل من الطالب والمدرّب والمركز.</p>
+        {{-- بطاقة 2 --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <h2 class="h4 fw-bold mb-4" style="color:#0056b3;">
+                    لماذا تم إنشاؤه؟
+                </h2>
+
+                <p class="mb-3" style="color:#333;">
+                    الهدف هو تقديم نظام واضح للطلاب بدل التشتت بين الأوراق والرسائل.
+                </p>
+
+                <p class="mb-4" style="color:#6c757d;">
+                    مكان واحد بسيط يجمع كل شيء.
+                </p>
+
+                <div class="text-center mt-4">
+                    <i class="fas fa-graduation-cap fa-4x" style="color:#d5dbe2;"></i>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
+</section>
+
+{{-- الدعوة للعمل --}}
+<section class="py-5" style="background-color: #003366;">
+    <div class="container text-center">
+        <h2 class="fw-bold text-white mb-3">ابدأ الآن</h2>
+        <p class="text-white-50 mb-4">سجل حسابك للوصول إلى الدورات بسهولة</p>
+
+        <a href="{{ route('student.register') }}" 
+           class="btn btn-light btn-lg px-5 py-2 fw-bold shadow-sm">
+            تسجيل جديد
+        </a>
+    </div>
+</section>
+
 @endsection
