@@ -1,84 +1,90 @@
 @extends('layouts.public')
 
-@section('title', 'اتصل بنا')
+@section('title', 'حول النظام')
 
 @section('content')
 
-<div class="container py-5">
+{{-- القسم الرئيسي --}}
+<section class="py-5" style="background-color: #f4f7fb;">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold" style="color:#003366;">ما هو CAT؟</h1>
 
-    {{-- عنوان الصفحة --}}
-    <div class="text-center mb-5">
-        <h1 class="fw-bold" style="color:#003366;">اتصل بنا</h1>
-        <p class="text-muted mt-3" style="max-width:700px; margin:auto;">
-            إذا واجهت مشكلة أو لديك سؤال بخصوص النظام، يمكنك التواصل عبر البريد الإلكتروني،
-            أو إرسال رسالة من خلال النموذج أدناه.
-        </p>
+            <p class="lead mt-3 mx-auto" style="max-width:800px; color:#6c757d;">
+                CAT هو نظام بسيط يساعد الطلاب على إدارة الدورات ومعلومات الحساب 
+                داخل مراكز التدريب بطريقة واضحة وسهلة.
+            </p>
+        </div>
     </div>
+</section>
 
-    {{-- معلومات التواصل --}}
-    <div class="row justify-content-center mb-4 gy-4">
+{{-- المميزات --}}
+<section class="container py-5">
+    <div class="row justify-content-center">
+        
+        {{-- بطاقة 1 --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <h2 class="h4 fw-bold mb-4" style="color:#0056b3;">
+                    ماذا يمكنني أن أفعل داخل النظام؟
+                </h2>
 
-        <div class="col-md-6">
-            <div class="p-4 bg-white shadow-sm rounded h-100">
-                <h5 class="fw-bold mb-2" style="color:#0056b3;">الدعم الفني</h5>
-                <p class="text-muted mb-1">للمشاكل التقنية أو أي صعوبات داخل النظام:</p>
-                <a href="mailto:support@cat.com" class="fw-bold" style="color:#003366;">
-                    support@cat.com
-                </a>
+                <ul class="list-unstyled" style="color:#333;">
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        التسجيل في الدورات المتاحة.
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        متابعة بيانات حسابك بسهولة.
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        الاطلاع على المدربين والمراكز.
+                    </li>
+                    <li class="mb-2 d-flex">
+                        <span class="me-2" style="color:#003366;">•</span> 
+                        معرفة الدورات التي التحقت بها.
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="p-4 bg-white shadow-sm rounded h-100">
-                <h5 class="fw-bold mb-2" style="color:#0056b3;">الاستفسارات العامة</h5>
-                <p class="text-muted mb-1">للأسئلة العامة أو التواصل الإداري:</p>
-                <a href="mailto:info@cat.com" class="fw-bold" style="color:#003366;">
-                    info@cat.com
-                </a>
-            </div>
-        </div>
+        {{-- بطاقة 2 --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <h2 class="h4 fw-bold mb-4" style="color:#0056b3;">
+                    لماذا تم إنشاؤه؟
+                </h2>
 
-    </div>
-
-    {{-- نموذج الرسالة --}}
-    <div class="row justify-content-center mt-4">
-
-        <div class="col-lg-8">
-            <div class="p-4 shadow-sm rounded bg-white">
-
-                <h5 class="fw-bold mb-3 text-center" style="color:#0056b3;">إرسال رسالة</h5>
-
-                <p class="text-muted text-center mb-4">
-                    اكتب رسالتك هنا وسنقوم بالرد عليك في أقرب وقت.
+                <p class="mb-3" style="color:#333;">
+                    الهدف هو تقديم نظام واضح للطلاب بدل التشتت بين الأوراق والرسائل.
                 </p>
 
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">الاسم</label>
-                        <input type="text" class="form-control">
-                    </div>
+                <p class="mb-4" style="color:#6c757d;">
+                    مكان واحد بسيط يجمع كل شيء.
+                </p>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">البريد الإلكتروني</label>
-                        <input type="email" class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">الرسالة</label>
-                        <textarea rows="4" class="form-control"></textarea>
-                    </div>
-
-                    <button class="btn px-4 py-2 fw-bold text-white mt-2" 
-                        style="background-color:#003366;">
-                        إرسال
-                    </button>
-                </form>
-
+                <div class="text-center mt-4">
+                    <i class="fas fa-graduation-cap fa-4x" style="color:#d5dbe2;"></i>
+                </div>
             </div>
         </div>
 
     </div>
+</section>
 
-</div>
+{{-- الدعوة للعمل --}}
+<section class="py-5" style="background-color: #003366;">
+    <div class="container text-center">
+        <h2 class="fw-bold text-white mb-3">ابدأ الآن</h2>
+        <p class="text-white-50 mb-4">سجل حسابك للوصول إلى الدورات بسهولة</p>
+
+        <a href="{{ route('student.register') }}" 
+           class="btn btn-light btn-lg px-5 py-2 fw-bold shadow-sm">
+            تسجيل جديد
+        </a>
+    </div>
+</section>
 
 @endsection

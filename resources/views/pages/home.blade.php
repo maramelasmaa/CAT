@@ -12,7 +12,7 @@
              style="object-fit: cover; border-color: white !important;">
 
         <h1 class="display-3 fw-bolder mb-3" style="color: #00366c;">
-            مرحبًا بك في <span style="color: #007bff;">CAT System</span>
+            مرحبًا بك في <span style="color: #007bff;">CAT</span>
         </h1>
         
         <p class="lead mb-5 mx-auto text-secondary" style="max-width: 700px;">

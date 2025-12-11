@@ -52,7 +52,7 @@ tailwind.config = {
     {{-- ⬅️ LEFT PANEL: الشعار والخلفية الجذابة (لشاشات العرض الكبيرة) --}}
     <div class="hidden lg:flex w-[35%] bg-gradient-to-b from-brand-blue to-primary flex-col justify-center items-center p-12 text-white text-center shadow-2xl">
         <img src="{{ asset('images/cat-logo.png') }}" class="h-40 w-40 rounded-full mb-8 border-4 border-white/30" alt="CAT Logo">
-        <h1 class="text-4xl font-extrabold mb-3">أهلاً بك في CAT System</h1>
+        <h1 class="text-4xl font-extrabold mb-3">أهلاً بك في CAT</h1>
         <p class="text-lg opacity-90">منصة إدارة التدريب الأكثر ذكاءً واحترافية.</p>
     </div>
 

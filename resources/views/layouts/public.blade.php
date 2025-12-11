@@ -32,7 +32,7 @@
 
         <!-- Logo / Brand -->
         <a class="navbar-brand fw-bold text-white" href="{{ route('home') }}">
-            CAT System
+            CAT
         </a>
 
         <!-- Mobile toggle -->
