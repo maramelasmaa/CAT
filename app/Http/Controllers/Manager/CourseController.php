@@ -34,7 +34,7 @@ class CourseController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('courses', 'public');
-            $input['image'] = Storage::url($path);
+            $input['image'] = $path;
         }
 
         $input['center_id'] = auth('manager')->user()->center_id;
@@ -89,7 +89,7 @@ class CourseController extends Controller
             }
 
             $path = $request->file('image')->store('courses', 'public');
-            $input['image'] = Storage::url($path);
+            $input['image'] = $path;
         } else {
             $input['image'] = $course->image;
         }

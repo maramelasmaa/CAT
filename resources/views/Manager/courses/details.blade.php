@@ -4,35 +4,96 @@
 
 @section('content')
 
-<div class="rounded-2xl bg-white p-6 shadow-sm max-w-xl">
+<div class="max-w-xl rounded-2xl bg-white p-6 shadow-sm border border-gray-200">
 
-    {{-- Image --}}
+    {{-- Course Image --}}
     @if($course->image)
-        <img src="{{ asset('storage/' . $course->image) }}" class="w-32 h-32 rounded-lg object-cover mb-4">
+        <img
+            src="{{ asset('storage/' . $course->image) }}"
+            alt="صورة الدورة"
+            class="w-40 h-40 rounded-lg object-cover mb-5 mx-auto"
+        >
     @endif
 
-    <p class="mb-2"><span class="font-bold">اسم الدورة:</span> {{ $course->title }}</p>
-    <p class="mb-2"><span class="font-bold">الوصف:</span> {{ $course->description ?? '—' }}</p>
-    <p class="mb-2"><span class="font-bold">السعة:</span> {{ $course->capacity }}</p>
-    <p class="mb-2"><span class="font-bold">المقاعد المتاحة:</span> {{ $course->available_seats }}</p>
-    <p class="mb-2"><span class="font-bold">الجدول:</span> {{ $course->schedule ?? '—' }}</p>
+    {{-- Course Info --}}
+    <div class="space-y-2 text-sm">
 
-    <hr class="my-4">
+        <p>
+            <span class="font-bold text-[#003366]">اسم الدورة:</span>
+            {{ $course->title }}
+        </p>
+
+        <p>
+            <span class="font-bold text-[#003366]">الوصف:</span>
+            {{ $course->description ?? '—' }}
+        </p>
+
+        <p>
+            <span class="font-bold text-[#003366]">السعة:</span>
+            {{ $course->capacity }}
+        </p>
+
+        <p>
+            <span class="font-bold text-[#003366]">المقاعد المتاحة:</span>
+            {{ $course->available_seats }}
+        </p>
+
+        <p>
+            <span class="font-bold text-[#003366]">الجدول:</span>
+            {{ $course->schedule ?? '—' }}
+        </p>
+
+    </div>
+
+    <hr class="my-5">
 
     {{-- Tutor Info --}}
-    <h3 class="font-bold text-lg mb-3 text-[#003366]">المدرب</h3>
+    <h3 class="text-lg font-bold text-[#003366] mb-3">
+        المدرب
+    </h3>
 
     @if($course->tutor)
-        @if($course->tutor->image)
-            <img src="{{ asset('storage/' . $course->tutor->image) }}" class="w-20 h-20 rounded-full object-cover mb-3">
-        @endif
+        <div class="flex items-center gap-4">
 
-        <p class="mb-2"><span class="font-bold">الاسم:</span> {{ $course->tutor->name }}</p>
-        <p class="mb-2"><span class="font-bold">الهاتف:</span> {{ $course->tutor->phone }}</p>
-        <p class="mb-2"><span class="font-bold">التخصص:</span> {{ $course->tutor->specialization }}</p>
+            @if($course->tutor->image)
+                <img
+                    src="{{ asset('storage/' . $course->tutor->image) }}"
+                    alt="صورة المدرب"
+                    class="w-20 h-20 rounded-full object-cover"
+                >
+            @endif
+
+            <div class="text-sm space-y-1">
+                <p>
+                    <span class="font-bold">الاسم:</span>
+                    {{ $course->tutor->name }}
+                </p>
+                <p>
+                    <span class="font-bold">الهاتف:</span>
+                    {{ $course->tutor->phone ?? '—' }}
+                </p>
+                <p>
+                    <span class="font-bold">التخصص:</span>
+                    {{ $course->tutor->specialization ?? '—' }}
+                </p>
+            </div>
+
+        </div>
     @else
-        <p class="text-gray-500">لا يوجد مدرب مرتبط بهذه الدورة.</p>
+        <p class="text-gray-500 text-sm">
+            لا يوجد مدرب مرتبط بهذه الدورة.
+        </p>
     @endif
+
+    {{-- Back Button --}}
+    <div class="mt-6">
+        <a
+            href="{{ route('manager.courses.index') }}"
+            class="inline-block bg-gray-200 hover:bg-gray-300 text-sm px-4 py-2 rounded-lg"
+        >
+            رجوع إلى الدورات
+        </a>
+    </div>
 
 </div>
 

@@ -2,98 +2,82 @@
 
 use Illuminate\Support\Facades\Route;
 
-// AUTH CONTROLLERS
+/*
+|--------------------------------------------------------------------------
+| AUTH CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\StudentAuthController;
 
-// ADMIN CONTROLLERS
-use App\Http\Controllers\Admin\DashboardController;
+/*
+|--------------------------------------------------------------------------
+| ADMIN CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\CenterController;
 use App\Http\Controllers\Admin\CenterManagerController;
 
-// MANAGER CONTROLLERS
+/*
+|--------------------------------------------------------------------------
+| MANAGER CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\TutorController;
 use App\Http\Controllers\Manager\CourseController;
-use App\Http\Controllers\Manager\EnrollmentController;
+use App\Http\Controllers\Manager\EnrollmentController as ManagerEnrollmentController;
 
-// STUDENT CONTROLLERS
-use App\Http\Controllers\Student\StudentController;
+/*
+|--------------------------------------------------------------------------
+| STUDENT CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Student\CenterController as StudentCenterController;
+use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\EnrollmentController as StudentEnrollmentController;
-use App\Http\Controllers\Student\RatingController;
 
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PAGES
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn () => view('pages.home'))->name('home');
+Route::get('/about', fn () => view('pages.about'))->name('about');
+Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 
-// ========================
-// GENERAL AUTH ROUTES
-// ========================
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+    ->name('login.form');
 
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.attempt');
 
+Route::post('/logout', [LoginController::class, 'logout'])
+    ->name('logout');
 
-// ========================
-// STUDENT AUTH ROUTES
-// ========================
 Route::get('/student/register', [StudentAuthController::class, 'showRegisterForm'])
     ->name('student.register');
 
 Route::post('/student/register', [StudentAuthController::class, 'register'])
     ->name('student.register.store');
 
-// STUDENT LOGIN (optional if using same login page)
-Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])
-    ->name('student.login');
-
-Route::post('/student/login', [StudentAuthController::class, 'login'])
-    ->name('student.login.attempt');
-
-
-// ========================
-// STUDENT PAGES (after login)
-// ========================
-Route::middleware('auth:web')->group(function () {
-
-    // Student Homepage (Courses + Centers)
-    Route::get('/student/home', [StudentController::class, 'home'])
-        ->name('student.home');
-
-    // My Courses
-    Route::get('/student/my-courses', [StudentController::class, 'myCourses'])
-        ->name('student.myCourses');
-
-    // Enrollment — reserve seat (on campus payment)
-    Route::post('/student/courses/{course}/reserve', [StudentEnrollmentController::class, 'reserve'])
-        ->name('student.reserve');
-
-    // Enrollment — bank transfer proof
-    Route::post('/student/courses/{course}/upload-proof', [StudentEnrollmentController::class, 'uploadBankProof'])
-        ->name('student.uploadProof');
-
-    // Rating
-    Route::post('/student/enrollments/{enrollment}/rate', [RatingController::class, 'store'])
-        ->name('student.rate');
-});
-
-
-
-// ========================
-// ADMIN ROUTES
-// ========================
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:admin')->group(function () {
 
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
-    Route::resource('centers', CenterController::class)->names([
-        'index'   => 'centers.index',
-        'create'  => 'centers.create',
-        'store'   => 'centers.store',
-        'show'    => 'centers.show',
-        'edit'    => 'centers.edit',
-        'update'  => 'centers.update',
-        'destroy' => 'centers.destroy',
-    ]);
+    Route::resource('centers', CenterController::class)->names('centers');
 
     Route::resource('center-managers', CenterManagerController::class)->names([
         'index'   => 'centerManagers.index',
@@ -106,17 +90,16 @@ Route::middleware('auth:admin')->group(function () {
     ]);
 });
 
-
-
-// ========================
-// MANAGER ROUTES
-// ========================
+/*
+|--------------------------------------------------------------------------
+| MANAGER ROUTES
+|--------------------------------------------------------------------------
+*/
 Route::prefix('manager')
-    ->name('manager.')
     ->middleware('auth:manager')
+    ->name('manager.')
     ->group(function () {
 
-        // Dashboard
         Route::get('/dashboard', [ManagerDashboardController::class, 'index'])
             ->name('dashboard');
 
@@ -131,25 +114,45 @@ Route::prefix('manager')
             ->name('courses.details');
 
         // Enrollments
-        Route::get('enrollments', [EnrollmentController::class, 'index'])
+        Route::get('enrollments', [ManagerEnrollmentController::class, 'index'])
             ->name('enrollments.index');
 
-        Route::get('enrollments/{enrollment}/details', [EnrollmentController::class, 'details'])
-            ->name('enrollments.details');
-
-        Route::post('enrollments/{enrollment}/approve', [EnrollmentController::class, 'approve'])
+        Route::patch('enrollments/{enrollment}/approve',
+            [ManagerEnrollmentController::class, 'approve'])
             ->name('enrollments.approve');
 
-        Route::post('enrollments/{enrollment}/decline', [EnrollmentController::class, 'decline'])
+        Route::patch('enrollments/{enrollment}/decline',
+            [ManagerEnrollmentController::class, 'decline'])
             ->name('enrollments.decline');
     });
 
+/*
+|--------------------------------------------------------------------------
+| STUDENT ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::prefix('student')
+    ->middleware('auth:web')
+    ->name('student.')
+    ->group(function () {
 
+        // Centers
+        Route::get('/centers', [StudentCenterController::class, 'index'])
+            ->name('centers.index');
 
-// ========================
-// PUBLIC PAGES
-// ========================
-Route::get('/', function () { return view('pages.home'); })->name('home');
-Route::get('/about', function () { return view('pages.about'); })->name('about');
-Route::get('/contact', function () { return view('pages.contact'); })->name('contact');
+        Route::get('/centers/{center}', [StudentCenterController::class, 'show'])
+            ->name('centers.show');
 
+        // Course details
+        Route::get('/courses/{course}', [StudentCourseController::class, 'show'])
+            ->name('courses.show');
+
+        // Student enrollments list
+        Route::get('/enrollments', [StudentEnrollmentController::class, 'index'])
+            ->name('enrollments.index');
+
+        // ✅ ONE enrollment route (on-campus + bank)
+        Route::post('/courses/{course}/enroll',
+            [StudentEnrollmentController::class, 'store'])
+            ->name('enrollments.store');
+    });

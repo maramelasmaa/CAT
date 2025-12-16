@@ -19,14 +19,21 @@ class Course extends Model
         'center_id',
         'tutor_id',
     ];
+    
 
-    public function tutor()
-    {
-        return $this->belongsTo(Tutor::class);
-    }
+   public function center()
+{
+    return $this->belongsTo(\App\Models\Center::class);
+}
 
-    public function center()
-    {
-        return $this->belongsTo(Center::class);
-    }
+public function tutor()
+{
+    return $this->belongsTo(\App\Models\Tutor::class);
+}
+
+public function enrollments()
+{
+    return $this->hasMany(\App\Models\Enrollment::class);
+}
+
 }

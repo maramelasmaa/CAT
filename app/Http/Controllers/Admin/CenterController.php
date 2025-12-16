@@ -23,8 +23,7 @@ class CenterController extends Controller
     public function store(CenterRequest $request)
     {
         $data = $request->validated();
-
-        // Handle image upload
+        
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('centers', 'public');
         }
@@ -49,11 +48,8 @@ class CenterController extends Controller
     public function update(CenterRequest $request, Center $center)
     {
         $data = $request->validated();
-
-        // If updating image
+        
         if ($request->hasFile('image')) {
-
-            // Delete old one if exists
             if ($center->image) {
                 Storage::disk('public')->delete($center->image);
             }

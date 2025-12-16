@@ -3,20 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Enrollment extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'student_id',
+        'user_id',
         'course_id',
-        'payment_pdf',
         'status',
+        'payment_type',
+        'reservation_expiry',
+        'payment_proof',
+    ];
+    protected $casts = [
+        'reservation_expiry' => 'datetime',
     ];
 
-   
+    public function user()
+    {
+        return $this->belongsTo(User::class); // student
+    }
 
     public function course()
     {

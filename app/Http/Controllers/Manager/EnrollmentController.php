@@ -4,72 +4,65 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Enrollment;
-use Illuminate\Support\Facades\Storage;
 
 class EnrollmentController extends Controller
 {
+    /**
+     * List pending enrollments for this manager's center
+     */
     public function index()
     {
         $centerId = auth('manager')->user()->center_id;
 
-        $enrollments = Enrollment::with(['student', 'course'])
+        $enrollments = Enrollment::with(['user', 'course'])
+            ->where('status', 'pending')
             ->whereHas('course', function ($q) use ($centerId) {
                 $q->where('center_id', $centerId);
             })
+            ->latest()
             ->get();
 
         return view('Manager.enrollments.index', compact('enrollments'));
     }
 
-    public function details(Enrollment $enrollment)
-    {
-        $centerId = auth('manager')->user()->center_id;
-
-        if ($enrollment->course->center_id !== $centerId) {
-            abort(403);
-        }
-
-        $enrollment->load(['student', 'course']);
-
-        return view('Manager.enrollments.details', compact('enrollment'));
-    }
-
+    /**
+     * Approve enrollment
+     */
     public function approve(Enrollment $enrollment)
     {
-        $centerId = auth('manager')->user()->center_id;
-
-        if ($enrollment->course->center_id !== $centerId) {
-            abort(403);
-        }
-
-        $course = $enrollment->course;
-
-        if ($course->available_seats > 0) {
-            $course->available_seats -= 1;
-            $course->save();
-        }
+        $this->authorizeEnrollment($enrollment);
 
         $enrollment->update([
-            'status' => 'approved'
+            'status' => 'approved',
         ]);
 
-        return redirect()->route('manager.enrollments.index')
-            ->with('success', 'تم قبول التسجيل');
+        return back()->with('success', 'Enrollment approved.');
     }
 
+    /**
+     * Decline enrollment
+     */
     public function decline(Enrollment $enrollment)
     {
-        $centerId = auth('manager')->user()->center_id;
-
-        if ($enrollment->course->center_id !== $centerId) {
-            abort(403);
-        }
+        $this->authorizeEnrollment($enrollment);
 
         $enrollment->update([
-            'status' => 'declined'
+            'status' => 'rejected',
         ]);
 
-        return redirect()->route('manager.enrollments.index')
-            ->with('success', 'تم رفض التسجيل');
+        // Return seat
+        $enrollment->course->increment('available_seats');
+
+        return back()->with('success', 'Enrollment rejected.');
+    }
+
+    /**
+     * Security check
+     */
+    private function authorizeEnrollment(Enrollment $enrollment)
+    {
+        if ($enrollment->course->center_id !== auth('manager')->user()->center_id) {
+            abort(403);
+        }
     }
 }

@@ -29,7 +29,7 @@ class TutorController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('tutors', 'public');
-            $input['image'] = Storage::url($path);
+            $input['image'] = $path;
         }
 
         $input['center_id'] = auth('manager')->user()->center_id;
@@ -79,7 +79,7 @@ class TutorController extends Controller
             }
 
             $path = $request->file('image')->store('tutors', 'public');
-            $input['image'] = Storage::url($path);
+            $input['image'] = $path;
         } else {
             $input['image'] = $tutor->image;
         }

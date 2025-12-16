@@ -23,45 +23,19 @@ class StudentAuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        // Hash password
         $data['password'] = Hash::make($data['password']);
 
-        // Create student user
         $user = User::create($data);
 
-        // Login student
-        Auth::login($user);
+        // ✅ Login explicitly as student
+        Auth::guard('web')->login($user);
 
-        return redirect()->route('home')->with('success', 'تم إنشاء الحساب بنجاح 🎉');
+        // ✅ Redirect to student area (NOT home)
+        return redirect()->route('student.centers.index')
+            ->with('success', 'تم إنشاء الحساب بنجاح 🎉');
     }
 
-    public function showLoginForm()
-    {
-        // Students do NOT have separate login page → redirect to shared login
-        return redirect()->route('login.form');
-    }
+    
 
-    public function login(Request $request)
-    {
-        $data = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($data)) {
-            return redirect()->route('home');
-        }
-
-        return back()->with('error', 'بيانات تسجيل الدخول غير صحيحة');
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        // After logout, student goes to shared login page
-        return redirect()->route('login.form');
-    }
+    
 }
