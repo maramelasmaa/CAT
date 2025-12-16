@@ -32,12 +32,22 @@ class ManagerDashboardController extends Controller
             ->where('center_id', $centerId)
             ->get();
 
+        $latestBankEnrollments = Enrollment::with(['user', 'course'])
+            ->where('payment_type', 'bank')
+            ->where('status', 'pending')
+            ->whereHas('course', function ($q) use ($centerId) {
+                $q->where('center_id', $centerId);
+            })
+            ->latest()
+            ->get();
+
         return view('Manager.dashboard', compact(
             'coursesCount',
             'tutorsCount',
             'pendingEnrollments',
             'approvedEnrollments',
-            'coursesCapacity'
+            'coursesCapacity',
+            'latestBankEnrollments'
         ));
     }
 }

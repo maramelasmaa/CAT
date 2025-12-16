@@ -52,6 +52,14 @@
                             </p>
                         @endif
 
+                        @if($enrollment->payment_proof)
+                            <a href="{{ asset('storage/'.$enrollment->payment_proof) }}" target="_blank">
+                                View PDF
+                            </a>
+                        @else
+                            —
+                        @endif
+
                         @if(in_array($enrollment->status, ['pending','approved']))
                             <a href="{{ route('student.courses.show', $enrollment->course) }}"
                                class="btn btn-outline-primary btn-sm">

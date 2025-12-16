@@ -10,15 +10,15 @@
     <p class="mb-2"><span class="font-bold">الدورة:</span> {{ $enrollment->course->title }}</p>
     <p class="mb-2"><span class="font-bold">الحالة:</span> {{ $enrollment->status }}</p>
     <p class="mb-2"><span class="font-bold">طريقة الدفع:</span>
-        {{ $enrollment->payment_type === 'bank_transfer' ? 'تحويل بنكي' : 'الدفع في المركز' }}
+        {{ $enrollment->payment_type === 'bank' ? 'تحويل بنكي' : 'الدفع في المركز' }}
     </p>
 
     @if($enrollment->payment_proof)
-        <a href="{{ asset('storage/' . $enrollment->payment_proof) }}"
-           target="_blank"
-           class="text-[#1E90FF] underline">
-            عرض إثبات الدفع
+        <a href="{{ asset('storage/'.$enrollment->payment_proof) }}" target="_blank">
+            View PDF
         </a>
+    @else
+        —
     @endif
 
     <div class="flex gap-4 mt-6">

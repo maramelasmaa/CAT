@@ -46,7 +46,7 @@ class EnrollmentController extends Controller
         // 3. Validate input
         $request->validate([
             'payment_type'  => 'required|in:on_campus,bank',
-            'payment_proof' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'payment_proof' => 'required_if:payment_type,bank|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         // 4. Prepare data
