@@ -140,6 +140,12 @@ Route::prefix('student')
         Route::get('/centers', [StudentCenterController::class, 'index'])
             ->name('centers.index');
 
+        Route::get('/centers/search', [StudentCenterController::class, 'search'])
+            ->name('centers.search');
+
+        Route::get('/centers/{center}/courses/search', [StudentCenterController::class, 'searchCourses'])
+            ->name('centers.courses.search');
+
         Route::get('/centers/{center}', [StudentCenterController::class, 'show'])
             ->name('centers.show');
 

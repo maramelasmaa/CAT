@@ -50,20 +50,28 @@ class LoginController extends Controller
 
         return back()->with('error', 'البريد الإلكتروني أو كلمة المرور غير صحيحة');
     }
-
-    public function logout(Request $request)
-    {
-        if (Auth::guard('admin')->check()) {
-            Auth::guard('admin')->logout();
-        } elseif (Auth::guard('manager')->check()) {
-            Auth::guard('manager')->logout();
-        } elseif (Auth::guard('web')->check()) {
-            Auth::guard('web')->logout();
-        }
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login.form');
+public function logout(Request $request)
+{
+    // Determine which guard is currently logged in and log them out
+    if (Auth::guard('admin')->check()) {
+        Auth::guard('admin')->logout();
+    } 
+    
+    if (Auth::guard('manager')->check()) {
+        Auth::guard('manager')->logout();
+    } 
+    
+    if (Auth::guard('web')->check()) {
+        Auth::guard('web')->logout();
     }
+
+    // Completely destroy the session
+    $request->session()->invalidate();
+
+    // Regenerate the CSRF token to prevent token fixation attacks
+    $request->session()->regenerateToken();
+
+    // Redirect to the public home page instead of login
+    return redirect()->route('home');
+}
 }
