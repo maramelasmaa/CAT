@@ -45,7 +45,6 @@ use App\Http\Controllers\Student\EnrollmentController as StudentEnrollmentContro
 */
 Route::get('/', fn () => view('pages.home'))->name('home');
 Route::get('/about', fn () => view('pages.about'))->name('about');
-Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 
 /*
 |--------------------------------------------------------------------------

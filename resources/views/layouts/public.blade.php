@@ -3,92 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'منصة التدريب الاحترافية')</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <title>@yield('title') | CAT</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        :root { --main-blue: #003366; --accent-blue: #0066cc; --glass: rgba(255, 255, 255, 0.95); }
+        body { font-family: 'Tajawal', sans-serif; background: #fdfdfd; color: #1a1a1a; scroll-behavior: smooth; }
 
-        .hover-nav:hover {
-            color: #ffffff !important;
+        /* Modern Navbar */
+        .navbar { 
+            background: var(--glass) !important; 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 18px 0;
         }
+        .navbar-brand { font-weight: 800; font-size: 1.6rem; color: var(--main-blue) !important; letter-spacing: -1px; }
+        
+        .nav-link { 
+            font-weight: 500; color: #555 !important; 
+            margin: 0 10px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-link:hover { color: var(--accent-blue) !important; transform: translateY(-1px); }
 
-        /* Make navbar toggler icon white */
-        .navbar-toggler-icon {
-            filter: invert(1);
+        .btn-auth {
+            background: var(--main-blue); color: white !important;
+            padding: 10px 28px; border-radius: 12px; font-weight: 700;
+            transition: 0.4s; border: none; box-shadow: 0 4px 15px rgba(0,51,102,0.2);
+        }
+        .btn-auth:hover,
+        .btn-auth:focus,
+        .btn-auth:active {
+            background: var(--main-blue) !important;
+            color: white !important;
+            border-color: transparent !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,51,102,0.3);
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg shadow-sm" style="background-color:#003366;">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-
-        <!-- Logo / Brand -->
-        <a class="navbar-brand fw-bold text-white" href="{{ route('home') }}">
-            CAT
-        </a>
-
-        <!-- Mobile toggle -->
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <a class="navbar-brand" href="{{ route('home') }}">منظومة <span style="color:var(--accent-blue)">CAT</span></a>
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Menu -->
-        <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
-
-            <ul class="navbar-nav align-items-center gap-lg-3">
-
-                <li class="nav-item">
-                    <a class="nav-link text-white-50 fw-semibold hover-nav" href="{{ route('home') }}">
-                        الرئيسية
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white-50 fw-semibold hover-nav" href="{{ route('about') }}">
-                        من نحن
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white-50 fw-semibold hover-nav" href="{{ route('contact') }}">
-                        تواصل معنا
-                    </a>
-                </li>
-
-                <!-- Login Button -->
-                <li class="nav-item">
-                    <a href="{{ route('login.form') }}" 
-                        class="btn btn-outline-light px-4 py-1 fw-bold"
-                        style="border-width:2px;">
-                        تسجيل الدخول
-                    </a>
-                </li>
-
+        <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">من نحن</a></li>
+                <li class="nav-item ms-lg-3"><a href="{{ route('login.form') }}" class="btn btn-auth">تسجيل الدخول</a></li>
             </ul>
-
         </div>
-
     </div>
 </nav>
 
-<!-- Main Content -->
-<main>
-    @yield('content')
-</main>
+<main> @yield('content') </main>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Page-specific scripts -->
 @stack('scripts')
-
 </body>
 </html>

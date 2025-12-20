@@ -1,116 +1,99 @@
 @extends('layouts.public')
-
 @section('title', 'منصة CAT: بداية رحلتك نحو التميز')
 
 @section('content')
-
-<div class="hero text-center py-5" style="background-color: #e9f5ff; border-bottom: 5px solid #0056b3;">
+<section class="py-5 position-relative overflow-hidden" style="background: radial-gradient(circle at top right, #f0f7ff, #ffffff);">
     <div class="container py-5">
-        
-        <img src="{{ asset('images/cat-logo.png') }}" alt="شعار CAT" 
-             class="rounded-circle mb-4 shadow-lg border border-5" width="180" height="180" 
-             style="object-fit: cover; border-color: white !important;">
-
-        <h1 class="display-3 fw-bolder mb-3" style="color: #00366c;">
-            مرحبًا بك في <span style="color: #007bff;">CAT</span>
-        </h1>
-        
-        <p class="lead mb-5 mx-auto text-secondary" style="max-width: 700px;">
-            منصتنا هنا لتجعل رحلتك التعليمية أسهل وأكثر تنظيمًا. انضم إلينا وابدأ مغامرتك اليوم!
-        </p>
-
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="{{ route('student.register') }}" 
-               class="btn btn-lg px-5 py-3 shadow-lg fw-bold text-white"
-               style="background-color: #1E90FF; border-color: #1E90FF;">
-                ابدأ رحلتك الآن!
-            </a>
-
-            <a href="{{ route('login.form') }}" 
-               class="btn btn-outline-primary btn-lg px-5 py-3 fw-bold" 
-               style="border-width: 2px; color: #007bff; border-color: #007bff;">
-                لديّ حساب
-            </a>
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-center text-lg-start animate-fade-in">
+                <h1 class="display-3 fw-bold mb-4" style="line-height: 1.2; color: #001a33;">
+                    مرحبًا بك في <span style="color: #0066cc;">CAT</span>
+                </h1>
+                <p class="lead text-muted mb-5 fs-4" style="max-width: 550px;">
+                    منصتنا هنا لتجعل رحلتك التعليمية أسهل وأكثر تنظيمًا. انضم إلينا وابدأ مغامرتك اليوم!
+                </p>
+                <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+                    <a href="{{ route('student.register') }}" class="btn btn-auth btn-lg px-5 py-3 rounded-pill">ابدأ رحلتك الآن</a>
+                    <a href="{{ route('login.form') }}" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill fw-bold border-2">لديّ حساب</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="logo-wrapper">
+                    <img src="{{ asset('images/cat-logo.png') }}" class="img-fluid rounded-circle shadow-2xl main-logo" alt="CAT Logo">
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-
-<div class="container py-5">
-    <div class="text-center py-4">
-        <h2 class="display-5 fw-bold mb-4" style="color: #00366c;">
-            إلهامك اليومي يبدأ من هنا
-        </h2>
-        <p class="lead text-secondary mx-auto mb-5" style="max-width: 700px;">
-            كل يوم فرصة جديدة للتعلم. دع هذه الاقتباسات تُلهمك نحو التميز.
-        </p>
-        
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-8 col-lg-6">
-                <div class="p-4 rounded-3 shadow bg-white border">
-                    <p id="quote-display" class="fs-4 fw-light text-dark mb-3">
-                        "ابدأ من حيث أنت. استخدم ما لديك. افعل ما تستطيع."
-                    </p>
-                    <p id="quote-author" class="text-secondary fw-bold">- آرثر آش</p>
-                    <button id="new-quote-btn" class="btn btn-outline-info mt-3" style="color: #1E90FF; border-color: #1E90FF;">
-                        اقتباس جديد
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold h1">إلهامك اليومي يبدأ من هنا</h2>
+            <div class="mx-auto bg-primary mt-2" style="height: 4px; width: 60px; border-radius: 2px;"></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="quote-box p-5 rounded-5 shadow-sm text-center border">
+                    <i class="fa fa-quote-right fa-2x mb-4 text-primary opacity-25"></i>
+                    <p id="quote-display" class="fs-3 fw-light text-dark mb-4">"ابدأ من حيث أنت. استخدم ما لديك. افعل ما تستطيع."</p>
+                    <h5 id="quote-author" class="fw-bold text-secondary mb-4">- آرثر آش</h5>
+                    <button id="new-quote-btn" type="button" class="btn btn-light rounded-circle p-3 shadow-sm hover-rotate">
+                        <i class="fas fa-sync-alt text-primary"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<hr class="my-5">
-
-
-<div style="background-color: #0056b3;" class="py-5">
-    <div class="container text-center">
-        <h2 class="fw-bold text-white mb-4">اكتشف أكثر عن CAT</h2>
-        <p class="lead text-white-50 mb-4">
-            تعرّف على رؤيتنا وكيف نساعدك في رحلتك التعليمية.
-        </p>
-        <a href="{{ route('about') }}" 
-           class="btn btn-outline-light btn-lg px-5 py-3 fw-bold border-2">
-            المزيد عنا
-        </a>
-    </div>
-</div>
-
-@endsection
-
+</section>
 
 @push('scripts')
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        const quoteDisplay = document.getElementById('quote-display');
+        const quoteAuthor = document.getElementById('quote-author');
+        const newQuoteButton = document.getElementById('new-quote-btn');
 
-    const quotes = [
-        { quote: "ابدأ من حيث أنت. استخدم ما لديك. افعل ما تستطيع.", author: "آرثر آش" },
-        { quote: "لا تقم أبدًا بتأجيل العمل ليوم غد إذا كان بإمكانك القيام به اليوم.", author: "توماس جيفرسون" },
-        { quote: "التعليم هو أقوى سلاح يمكنك استخدامه لتغيير العالم.", author: "نيلسون مانديلا" },
-        { quote: "السر في المضي قدمًا هو البدء.", author: "أجاثا كريستي" },
-        { quote: "الطريقة الوحيدة لعمل عمل عظيم هي أن تحب ما تفعله.", author: "ستيف جوبز" },
-        { quote: "اجعل كل يوم تحفة فنية.", author: "جون وودن" },
-        { quote: "لا تخجل من أخطائك، فهي ما تصنعك اليوم.", author: "جوردان بيترسون" }
-    ];
+        if (!quoteDisplay || !quoteAuthor || !newQuoteButton) return;
 
-    const quoteDisplay = document.getElementById('quote-display');
-    const quoteAuthor = document.getElementById('quote-author');
-    const newQuoteBtn = document.getElementById('new-quote-btn');
+        const quotes = [
+            { text: 'ابدأ من حيث أنت. استخدم ما لديك. افعل ما تستطيع.', author: 'آرثر آش' },
+            { text: 'النجاح هو مجموع جهود صغيرة تتكرر يومًا بعد يوم.', author: 'روبرت كولير' },
+            { text: 'لا تنتظر الفرصة، اصنعها.', author: 'مثل شائع' },
+            { text: 'التعلّم لا يرهق العقل أبدًا.', author: 'ليوناردو دا فينشي' },
+            { text: 'من جدّ وجد، ومن زرع حصد.', author: 'مثل عربي' },
+        ];
 
-    function getRandomQuote() {
-        return quotes[Math.floor(Math.random() * quotes.length)];
-    }
+        function setQuote(quote) {
+            quoteDisplay.textContent = '"' + quote.text + '"';
+            quoteAuthor.textContent = '- ' + quote.author;
+        }
 
-    function displayQuote() {
-        const q = getRandomQuote();
-        quoteDisplay.textContent = `"${q.quote}"`;
-        quoteAuthor.textContent = `- ${q.author}`;
-    }
+        newQuoteButton.addEventListener('click', function () {
+            const currentText = quoteDisplay.textContent.replace(/^"|"$/g, '');
+            let next = quotes[Math.floor(Math.random() * quotes.length)];
 
-    displayQuote();
+            if (quotes.length > 1) {
+                let guard = 0;
+                while (next.text === currentText && guard < 10) {
+                    next = quotes[Math.floor(Math.random() * quotes.length)];
+                    guard++;
+                }
+            }
 
-    newQuoteBtn.addEventListener('click', displayQuote);
-});
+            setQuote(next);
+        });
+    });
 </script>
 @endpush
+
+<style>
+    .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+    .main-logo { width: 320px; height: 320px; object-fit: cover; border: 15px solid white; transition: 0.5s ease; }
+    .main-logo:hover { transform: scale(1.05) rotate(2deg); }
+    .quote-box { background: linear-gradient(to bottom left, #ffffff, #f9f9f9); border-color: #eee !important; }
+    .animate-fade-in { animation: fadeIn 1s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .hover-rotate:hover i { transform: rotate(180deg); transition: 0.5s; }
+</style>
+@endsection
