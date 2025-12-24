@@ -67,17 +67,11 @@
                         <div class="bg-light p-3 rounded-3 mb-4 border">
                             <h6 class="fw-bold mb-2">تقييم الدورة</h6>
 
-                            @if(!$canRateCourse)
-                                <div class="small text-muted">
-                                    يجب أن يكون تسجيلك <strong>معتمد</strong> لتقييم الدورة.
-                                </div>
-                            @endif
-
                             <form method="POST" action="{{ route('student.ratings.courses.store', $course) }}">
                                 @csrf
                                 <div class="row g-2">
                                     <div class="col-4">
-                                        <select name="rating" class="form-select form-select-sm" {{ !$canRateCourse ? 'disabled' : '' }} required>
+                                        <select name="rating" class="form-select form-select-sm" required>
                                             @for($i = 5; $i >= 1; $i--)
                                                 <option value="{{ $i }}" {{ (int)($userCourseRating->rating ?? 0) === $i ? 'selected' : '' }}>
                                                     {{ $i }} / 5
@@ -86,10 +80,10 @@
                                         </select>
                                     </div>
                                     <div class="col-8">
-                                        <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userCourseRating->comment ?? '') }}" {{ !$canRateCourse ? 'disabled' : '' }}>
+                                        <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userCourseRating->comment ?? '') }}">
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary btn-sm w-100" {{ !$canRateCourse ? 'disabled' : '' }}>حفظ التقييم</button>
+                                        <button class="btn btn-primary btn-sm w-100">حفظ التقييم</button>
                                     </div>
                                 </div>
                             </form>
@@ -98,18 +92,11 @@
                         @if($course->tutor)
                             <div class="bg-light p-3 rounded-3 mb-4 border">
                                 <h6 class="fw-bold mb-2">تقييم المدرب</h6>
-
-                                @if(!$canRateTutor)
-                                    <div class="small text-muted mb-2">
-                                        يجب أن يكون تسجيلك <strong>معتمد</strong> في دورة لدى هذا المدرب لتقييمه.
-                                    </div>
-                                @endif
-
                                 <form method="POST" action="{{ route('student.ratings.tutors.store', $course->tutor) }}">
                                     @csrf
                                     <div class="row g-2">
                                         <div class="col-4">
-                                            <select name="rating" class="form-select form-select-sm" {{ !$canRateTutor ? 'disabled' : '' }} required>
+                                            <select name="rating" class="form-select form-select-sm" required>
                                                 @for($i = 5; $i >= 1; $i--)
                                                     <option value="{{ $i }}" {{ (int)($userTutorRating->rating ?? 0) === $i ? 'selected' : '' }}>
                                                         {{ $i }} / 5
@@ -118,10 +105,10 @@
                                             </select>
                                         </div>
                                         <div class="col-8">
-                                            <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userTutorRating->comment ?? '') }}" {{ !$canRateTutor ? 'disabled' : '' }}>
+                                            <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userTutorRating->comment ?? '') }}">
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-outline-primary btn-sm w-100" {{ !$canRateTutor ? 'disabled' : '' }}>حفظ التقييم</button>
+                                            <button class="btn btn-outline-primary btn-sm w-100">حفظ التقييم</button>
                                         </div>
                                     </div>
                                 </form>

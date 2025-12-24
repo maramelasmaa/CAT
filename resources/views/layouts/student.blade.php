@@ -151,18 +151,6 @@
 </nav>
 
 <main class="container py-5">
-    @if(session('success'))
-        <div class="alert alert-success shadow-sm rounded-4 border-0">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger shadow-sm rounded-4 border-0">
-            {{ session('error') }}
-        </div>
-    @endif
-
     @yield('content')
 </main>
 
@@ -173,5 +161,33 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+@if(session('success') || session('error') || $errors->any())
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+        <div
+            id="appToast"
+            class="toast align-items-center text-bg-{{ session('success') ? 'success' : 'danger' }} border-0"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+        >
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('success') ?? session('error') ?? $errors->first() }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastEl = document.getElementById('appToast');
+            if (!toastEl || !window.bootstrap) return;
+            const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+            toast.show();
+        });
+    </script>
+@endif
 </body>
 </html>

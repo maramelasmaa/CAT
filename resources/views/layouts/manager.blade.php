@@ -96,18 +96,25 @@
             @yield('title')
         </h1>
 
-        {{-- Success Message --}}
-        @if(session('success'))
-            <div class="bg-green-100 text-green-800 px-4 py-3 rounded-lg mb-4">
-                {{ session('success') }}
+        {{-- Notifications --}}
+        @if(session('success') || session('error'))
+            <div id="appNotice" class="fixed top-4 left-4 z-50 max-w-sm w-[92%] sm:w-auto">
+                <div class="rounded-xl px-4 py-3 shadow-lg border
+                    {{ session('success') ? 'bg-green-600 border-green-700 text-white' : 'bg-red-600 border-red-700 text-white' }}">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="text-sm font-semibold leading-6">
+                            {{ session('success') ?? session('error') }}
+                        </div>
+                        <button type="button" onclick="document.getElementById('appNotice')?.remove()" class="text-white/90 hover:text-white">×</button>
+                    </div>
+                </div>
             </div>
-        @endif
-
-        {{-- Error Message --}}
-        @if(session('error'))
-            <div class="bg-red-100 text-red-800 px-4 py-3 rounded-lg mb-4">
-                {{ session('error') }}
-            </div>
+            <script>
+                setTimeout(function () {
+                    const el = document.getElementById('appNotice');
+                    if (el) el.remove();
+                }, 3500);
+            </script>
         @endif
 
         {{-- Page Content --}}
