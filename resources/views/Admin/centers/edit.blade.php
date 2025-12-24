@@ -40,7 +40,7 @@
             <div>
                 <label class="text-sm font-medium">الصورة الحالية</label>
                 @if($center->image)
-                    <img src="{{ asset('storage/'.$center->image) }}" class="w-16 h-16 rounded-full object-cover mb-2">
+                    <img src="{{ $center->image_url }}" class="w-16 h-16 rounded-full object-cover mb-2">
                 @else
                     <p class="text-gray-500 text-sm">لا توجد صورة</p>
                 @endif

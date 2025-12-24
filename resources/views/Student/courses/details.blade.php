@@ -8,7 +8,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm overflow-hidden rounded-4">
                 @if($course->image)
-                    <img src="{{ asset('storage/'.$course->image) }}" class="img-fluid w-100" style="height: 400px; object-fit: cover;">
+                    <img src="{{ $course->image_url }}" class="img-fluid w-100" style="height: 400px; object-fit: cover;">
                 @else
                     <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
                         <i class="bi bi-image text-muted display-1"></i>

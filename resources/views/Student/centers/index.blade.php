@@ -53,7 +53,7 @@
                 <div class="card shadow-sm border-0 h-100 overflow-hidden rounded-4">
                     <div class="center-image-container" style="height: 200px; overflow: hidden; position: relative;">
                         @if($center->image)
-                            <img src="{{ asset('storage/' . $center->image) }}" class="w-100 h-100 object-fit-cover transition-img" alt="{{ $center->name }}">
+                            <img src="{{ $center->image_url }}" class="w-100 h-100 object-fit-cover transition-img" alt="{{ $center->name }}">
                         @else
                             <div class="bg-primary bg-opacity-10 w-100 h-100 d-flex align-items-center justify-content-center">
                                 <i class="bi bi-building fs-1 text-primary"></i>

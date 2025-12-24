@@ -9,7 +9,7 @@
     {{-- Course Image --}}
     @if($course->image)
         <img
-            src="{{ asset('storage/' . $course->image) }}"
+            src="{{ $course->image_url }}"
             alt="صورة الدورة"
             class="w-40 h-40 rounded-lg object-cover mb-5 mx-auto"
         >
@@ -57,7 +57,7 @@
 
             @if($course->tutor->image)
                 <img
-                    src="{{ asset('storage/' . $course->tutor->image) }}"
+                    src="{{ $course->tutor->image_url }}"
                     alt="صورة المدرب"
                     class="w-20 h-20 rounded-full object-cover"
                 >

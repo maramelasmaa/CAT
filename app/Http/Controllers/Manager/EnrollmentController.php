@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Enrollment;
+use Illuminate\Support\Facades\DB;
 
 class EnrollmentController extends Controller
 {
@@ -32,9 +34,25 @@ class EnrollmentController extends Controller
     {
         $this->authorizeEnrollment($enrollment);
 
-        $enrollment->update([
-            'status' => 'approved',
-        ]);
+        DB::transaction(function () use ($enrollment) {
+            $locked = Enrollment::query()->whereKey($enrollment->id)->lockForUpdate()->firstOrFail();
+
+            // Idempotency: only pending can be approved
+            if ($locked->status !== 'pending') {
+                return;
+            }
+
+            // If on-campus reservation expired, mark expired and return seat
+            if ($locked->payment_type === 'on_campus'
+                && $locked->reservation_expiry
+                && $locked->reservation_expiry->isPast()) {
+                $locked->update(['status' => 'expired']);
+                Course::query()->whereKey($locked->course_id)->increment('available_seats');
+                return;
+            }
+
+            $locked->update(['status' => 'approved']);
+        });
 
         return back()->with('success', 'Enrollment approved.');
     }
@@ -46,12 +64,17 @@ class EnrollmentController extends Controller
     {
         $this->authorizeEnrollment($enrollment);
 
-        $enrollment->update([
-            'status' => 'rejected',
-        ]);
+        DB::transaction(function () use ($enrollment) {
+            $locked = Enrollment::query()->whereKey($enrollment->id)->lockForUpdate()->firstOrFail();
 
-        // Return seat
-        $enrollment->course->increment('available_seats');
+            // Idempotency: only pending reservations should return a seat
+            if ($locked->status !== 'pending') {
+                return;
+            }
+
+            $locked->update(['status' => 'rejected']);
+            Course::query()->whereKey($locked->course_id)->increment('available_seats');
+        });
 
         return back()->with('success', 'Enrollment rejected.');
     }

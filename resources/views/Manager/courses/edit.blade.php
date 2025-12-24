@@ -60,7 +60,7 @@
         </div>
 
         @if($course->image)
-            <img src="{{ asset('storage/' . $course->image) }}" class="w-28 h-28 rounded-lg object-cover mb-3">
+            <img src="{{ $course->image_url }}" class="w-28 h-28 rounded-lg object-cover mb-3">
         @endif
 
         <button class="w-full bg-[#1E90FF] text-white py-2.5 rounded-lg hover:bg-[#0077E6]">
