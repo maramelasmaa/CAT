@@ -151,6 +151,18 @@
 </nav>
 
 <main class="container py-5">
+    @if(session('success'))
+        <div class="alert alert-success shadow-sm rounded-4 border-0">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger shadow-sm rounded-4 border-0">
+            {{ session('error') }}
+        </div>
+    @endif
+
     @yield('content')
 </main>
 

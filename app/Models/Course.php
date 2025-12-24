@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Course extends Model
 {
@@ -34,6 +35,11 @@ public function tutor()
 public function enrollments()
 {
     return $this->hasMany(\App\Models\Enrollment::class);
+}
+
+public function ratings(): MorphMany
+{
+    return $this->morphMany(Rating::class, 'rateable');
 }
 
 public function getImageUrlAttribute(): ?string

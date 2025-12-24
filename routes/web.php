@@ -28,6 +28,7 @@ use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\TutorController;
 use App\Http\Controllers\Manager\CourseController;
 use App\Http\Controllers\Manager\EnrollmentController as ManagerEnrollmentController;
+use App\Http\Controllers\Manager\RatingController as ManagerRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ use App\Http\Controllers\Manager\EnrollmentController as ManagerEnrollmentContro
 use App\Http\Controllers\Student\CenterController as StudentCenterController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\EnrollmentController as StudentEnrollmentController;
+use App\Http\Controllers\Student\RatingController as StudentRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +125,10 @@ Route::prefix('manager')
         Route::patch('enrollments/{enrollment}/decline',
             [ManagerEnrollmentController::class, 'decline'])
             ->name('enrollments.decline');
+
+        // Ratings
+        Route::get('ratings', [ManagerRatingController::class, 'index'])
+            ->name('ratings.index');
     });
 
 /*
@@ -160,4 +166,14 @@ Route::prefix('student')
         Route::post('/courses/{course}/enroll',
             [StudentEnrollmentController::class, 'store'])
             ->name('enrollments.store');
+
+        // Ratings
+        Route::post('/courses/{course}/ratings', [StudentRatingController::class, 'storeCourse'])
+            ->name('ratings.courses.store');
+
+        Route::post('/centers/{center}/ratings', [StudentRatingController::class, 'storeCenter'])
+            ->name('ratings.centers.store');
+
+        Route::post('/tutors/{tutor}/ratings', [StudentRatingController::class, 'storeTutor'])
+            ->name('ratings.tutors.store');
     });

@@ -71,13 +71,11 @@
                             <span class="text-muted small">
                                 <i class="bi bi-mortarboard me-1"></i> {{ $center->courses_count ?? 0 }} دورة متاحة
                             </span>
-                            <div class="stars text-warning small">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                            </div>
+                            <span class="text-muted small">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                {{ number_format((float)($center->ratings_avg_rating ?? 0), 1) }}
+                                <span class="text-secondary">({{ $center->ratings_count ?? 0 }})</span>
+                            </span>
                         </div>
 
                         <a href="{{ route('student.centers.show', $center) }}" 

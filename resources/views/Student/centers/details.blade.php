@@ -11,6 +11,47 @@
         </ol>
     </nav>
     <h2 class="fw-bold">دورات {{ $center->name }}</h2>
+    <div class="text-muted mt-2">
+        <i class="bi bi-star-fill text-warning"></i>
+        {{ number_format((float)($center->ratings_avg_rating ?? 0), 1) }}
+        <span class="text-secondary">({{ $center->ratings_count ?? 0 }})</span>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+    <div class="card-body p-4">
+        <h5 class="fw-bold mb-3">تقييم المركز</h5>
+
+        @if(!$canRateCenter)
+            <div class="alert alert-warning border-0 rounded-4 small mb-3">
+                يجب أن يكون لديك تسجيل <strong>معتمد</strong> في دورة داخل هذا المركز لتقييمه.
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('student.ratings.centers.store', $center) }}">
+            @csrf
+
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">التقييم</label>
+                    <select name="rating" class="form-select" {{ !$canRateCenter ? 'disabled' : '' }} required>
+                        @for($i = 5; $i >= 1; $i--)
+                            <option value="{{ $i }}" {{ (int)($userCenterRating->rating ?? 0) === $i ? 'selected' : '' }}>
+                                {{ $i }} / 5
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label small fw-bold">ملاحظة (اختياري)</label>
+                    <input type="text" name="comment" class="form-control" maxlength="1000" value="{{ old('comment', $userCenterRating->comment ?? '') }}" {{ !$canRateCenter ? 'disabled' : '' }}>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" {{ !$canRateCenter ? 'disabled' : '' }}>حفظ</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="row justify-content-center mb-5">
@@ -63,6 +104,14 @@
                     
                     <div class="card-body p-4">
                         <h5 class="fw-bold mb-3 text-dark">{{ $course->title }}</h5>
+
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="text-muted small">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                {{ number_format((float)($course->ratings_avg_rating ?? 0), 1) }}
+                                <span class="text-secondary">({{ $course->ratings_count ?? 0 }})</span>
+                            </span>
+                        </div>
                         
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-person-circle text-muted me-2"></i>

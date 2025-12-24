@@ -22,6 +22,11 @@
                         </span>
                     </div>
                     <h2 class="fw-bold text-dark mb-4">{{ $course->title }}</h2>
+                    <div class="text-muted mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        {{ number_format((float)($course->ratings_avg_rating ?? 0), 1) }}
+                        <span class="text-secondary">({{ $course->ratings_count ?? 0 }})</span>
+                    </div>
                     <p class="text-secondary lh-lg fs-5 mb-0">{{ $course->description }}</p>
                 </div>
             </div>
@@ -41,13 +46,87 @@
                         <div class="list-group list-group-flush mb-4">
                             <div class="list-group-item px-0 d-flex align-items-center">
                                 <i class="bi bi-person-badge fs-4 text-primary me-3"></i>
-                                <div><small class="text-muted d-block">المدرب</small><strong>{{ $course->tutor->name ?? 'غير محدد' }}</strong></div>
+                                <div>
+                                    <small class="text-muted d-block">المدرب</small>
+                                    <strong>{{ $course->tutor->name ?? 'غير محدد' }}</strong>
+                                    @if($course->tutor)
+                                        <div class="text-muted small mt-1">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            {{ number_format((float)($course->tutor->ratings_avg_rating ?? 0), 1) }}
+                                            <span class="text-secondary">({{ $course->tutor->ratings_count ?? 0 }})</span>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                             <div class="list-group-item px-0 d-flex align-items-center">
                                 <i class="bi bi-calendar3 fs-4 text-primary me-3"></i>
                                 <div><small class="text-muted d-block">الجدول الزمني</small><strong>{{ $course->schedule }}</strong></div>
                             </div>
                         </div>
+
+                        <div class="bg-light p-3 rounded-3 mb-4 border">
+                            <h6 class="fw-bold mb-2">تقييم الدورة</h6>
+
+                            @if(!$canRateCourse)
+                                <div class="small text-muted">
+                                    يجب أن يكون تسجيلك <strong>معتمد</strong> لتقييم الدورة.
+                                </div>
+                            @endif
+
+                            <form method="POST" action="{{ route('student.ratings.courses.store', $course) }}">
+                                @csrf
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <select name="rating" class="form-select form-select-sm" {{ !$canRateCourse ? 'disabled' : '' }} required>
+                                            @for($i = 5; $i >= 1; $i--)
+                                                <option value="{{ $i }}" {{ (int)($userCourseRating->rating ?? 0) === $i ? 'selected' : '' }}>
+                                                    {{ $i }} / 5
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userCourseRating->comment ?? '') }}" {{ !$canRateCourse ? 'disabled' : '' }}>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary btn-sm w-100" {{ !$canRateCourse ? 'disabled' : '' }}>حفظ التقييم</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        @if($course->tutor)
+                            <div class="bg-light p-3 rounded-3 mb-4 border">
+                                <h6 class="fw-bold mb-2">تقييم المدرب</h6>
+
+                                @if(!$canRateTutor)
+                                    <div class="small text-muted mb-2">
+                                        يجب أن يكون تسجيلك <strong>معتمد</strong> في دورة لدى هذا المدرب لتقييمه.
+                                    </div>
+                                @endif
+
+                                <form method="POST" action="{{ route('student.ratings.tutors.store', $course->tutor) }}">
+                                    @csrf
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <select name="rating" class="form-select form-select-sm" {{ !$canRateTutor ? 'disabled' : '' }} required>
+                                                @for($i = 5; $i >= 1; $i--)
+                                                    <option value="{{ $i }}" {{ (int)($userTutorRating->rating ?? 0) === $i ? 'selected' : '' }}>
+                                                        {{ $i }} / 5
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="text" name="comment" maxlength="1000" class="form-control form-control-sm" placeholder="ملاحظة (اختياري)" value="{{ old('comment', $userTutorRating->comment ?? '') }}" {{ !$canRateTutor ? 'disabled' : '' }}>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-outline-primary btn-sm w-100" {{ !$canRateTutor ? 'disabled' : '' }}>حفظ التقييم</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
 
                         <ul class="nav nav-pills nav-justified mb-4 bg-light p-1 rounded-pill" id="paymentTabs" role="tablist">
                             <li class="nav-item">

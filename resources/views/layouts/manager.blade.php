@@ -67,6 +67,14 @@
                 طلبات التسجيل
             </a>
 
+            {{-- Ratings --}}
+            <a href="{{ route('manager.ratings.index') }}"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg
+               {{ request()->routeIs('manager.ratings.*') ? 'bg-[#1E90FF]' : 'hover:bg-[#1E90FF]/70' }}">
+                <span class="material-symbols-outlined">star</span>
+                التقييمات
+            </a>
+
         </nav>
 
         {{-- Logout --}}
@@ -92,6 +100,13 @@
         @if(session('success'))
             <div class="bg-green-100 text-green-800 px-4 py-3 rounded-lg mb-4">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Error Message --}}
+        @if(session('error'))
+            <div class="bg-red-100 text-red-800 px-4 py-3 rounded-lg mb-4">
+                {{ session('error') }}
             </div>
         @endif
 

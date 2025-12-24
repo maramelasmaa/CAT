@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Center;
+use App\Models\Enrollment;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 
 class CenterController extends Controller
@@ -12,6 +14,8 @@ class CenterController extends Controller
     {
         $centers = Center::query()
             ->withCount('courses')
+            ->withAvg('ratings', 'rating')
+            ->withCount('ratings')
             ->orderByDesc('created_at')
             ->get();
         return view('Student.centers.index', compact('centers'));
@@ -23,6 +27,8 @@ class CenterController extends Controller
 
         $query = Center::query()
             ->withCount('courses')
+            ->withAvg('ratings', 'rating')
+            ->withCount('ratings')
             ->orderByDesc('created_at');
 
         if ($term !== '') {
@@ -36,15 +42,42 @@ class CenterController extends Controller
 
     public function show(Center $center)
     {
-        $center->load('courses.tutor');
-        return view('Student.centers.details', compact('center'));
+        $center->loadAvg('ratings', 'rating')->loadCount('ratings');
+        $center->load(['courses' => function ($q) {
+            $q->with('tutor')
+                ->withAvg('ratings', 'rating')
+                ->withCount('ratings')
+                ->orderByDesc('created_at');
+        }]);
+
+        $userCenterRating = Rating::query()
+            ->where('user_id', auth('web')->id())
+            ->where('rateable_type', Center::class)
+            ->where('rateable_id', $center->id)
+            ->first();
+
+        $canRateCenter = Enrollment::query()
+            ->where('user_id', auth('web')->id())
+            ->where('status', 'approved')
+            ->whereHas('course', function ($q) use ($center) {
+                $q->where('center_id', $center->id);
+            })
+            ->exists();
+
+        return view('Student.centers.details', compact('center', 'userCenterRating', 'canRateCenter'));
     }
 
     public function searchCourses(Center $center, Request $request)
     {
         $term = trim((string) $request->input('q', $request->input('title', '')));
 
-        $coursesQuery = $center->courses()->with('tutor')->orderByDesc('created_at');
+        $center->loadAvg('ratings', 'rating')->loadCount('ratings');
+
+        $coursesQuery = $center->courses()
+            ->with('tutor')
+            ->withAvg('ratings', 'rating')
+            ->withCount('ratings')
+            ->orderByDesc('created_at');
 
         if ($term !== '') {
             $coursesQuery->where('title', 'LIKE', '%' . $term . '%');
@@ -52,6 +85,20 @@ class CenterController extends Controller
 
         $center->setRelation('courses', $coursesQuery->get());
 
-        return view('Student.centers.details', compact('center'));
+        $userCenterRating = Rating::query()
+            ->where('user_id', auth('web')->id())
+            ->where('rateable_type', Center::class)
+            ->where('rateable_id', $center->id)
+            ->first();
+
+        $canRateCenter = Enrollment::query()
+            ->where('user_id', auth('web')->id())
+            ->where('status', 'approved')
+            ->whereHas('course', function ($q) use ($center) {
+                $q->where('center_id', $center->id);
+            })
+            ->exists();
+
+        return view('Student.centers.details', compact('center', 'userCenterRating', 'canRateCenter'));
     }
 }
