@@ -34,41 +34,37 @@ class RatingController extends Controller
             ->orderBy('name')
             ->get();
 
-        $courseIds = $courses->pluck('id');
-        $tutorIds = $tutors->pluck('id');
-
-        $centerRatings = Rating::query()
-            ->with('user')
-            ->where('rateable_type', Center::class)
-            ->where('rateable_id', $centerId)
-            ->latest()
-            ->get();
-
-        $courseRatings = Rating::query()
-            ->with(['user'])
-            ->where('rateable_type', Course::class)
-            ->whereIn('rateable_id', $courseIds)
-            ->latest()
-            ->get();
-
-        $tutorRatings = Rating::query()
-            ->with(['user'])
-            ->where('rateable_type', Tutor::class)
-            ->whereIn('rateable_id', $tutorIds)
-            ->latest()
-            ->get();
+        $courseIds = $courses->pluck('id')->all();
+        $tutorIds = $tutors->pluck('id')->all();
 
         // Map course/tutor titles for quick lookup in the Blade
         $courseTitleById = $courses->pluck('title', 'id');
         $tutorNameById = $tutors->pluck('name', 'id');
 
+        $ratings = Rating::query()
+            ->with('user')
+            ->where(function ($q) use ($centerId, $courseIds, $tutorIds) {
+                $q->where(function ($q) use ($centerId) {
+                    $q->where('rateable_type', Center::class)
+                        ->where('rateable_id', $centerId);
+                })
+                ->orWhere(function ($q) use ($courseIds) {
+                    $q->where('rateable_type', Course::class)
+                        ->whereIn('rateable_id', $courseIds);
+                })
+                ->orWhere(function ($q) use ($tutorIds) {
+                    $q->where('rateable_type', Tutor::class)
+                        ->whereIn('rateable_id', $tutorIds);
+                });
+            })
+            ->latest()
+            ->get();
+
         return view('Manager.ratings.index', compact(
             'center',
             'courses',
             'tutors',
-            'centerRatings',
-            'courseRatings',
-            'tutorRatings',
+            'ratings',
             'courseTitleById',
             'tutorNameById'
         ));
