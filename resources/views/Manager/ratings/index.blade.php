@@ -6,108 +6,175 @@
 
 <div class="space-y-6">
 
-    {{-- Header Summary --}}
+    @php
+        $hasFilters = (string) request('q') !== '' || (request('type') && request('type') !== 'all');
+    @endphp
+
+    @unless($hasFilters)
+        {{-- Header Summary --}}
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-[#003366]">{{ $center->name }}</h2>
+                    <p class="text-sm text-gray-500 mt-1">ملخص التقييمات الخاصة بمركزك فقط</p>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="text-right">
+                        <div class="text-xs text-gray-500">متوسط تقييم المركز</div>
+                        <div class="text-2xl font-extrabold text-[#003366]">{{ number_format((float)($center->ratings_avg_rating ?? 0), 1) }} / 5</div>
+                        <div class="text-sm text-gray-500">({{ $center->ratings_count ?? 0 }}) تقييم</div>
+                    </div>
+
+                    <div class="h-10 w-px bg-gray-200"></div>
+
+                    <div class="text-right">
+                        <div class="text-xs text-gray-500">الدورات</div>
+                        <div class="text-2xl font-extrabold text-[#003366]">{{ $courses->count() }}</div>
+                    </div>
+
+                    <div class="h-10 w-px bg-gray-200"></div>
+
+                    <div class="text-right">
+                        <div class="text-xs text-gray-500">المدربون</div>
+                        <div class="text-2xl font-extrabold text-[#003366]">{{ $tutors->count() }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endunless
+
+    {{-- Search + Filters --}}
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h2 class="text-xl font-extrabold text-[#003366]">{{ $center->name }}</h2>
-                <p class="text-sm text-gray-500 mt-1">ملخص التقييمات الخاصة بمركزك فقط</p>
+        <form method="GET" action="{{ route('manager.ratings.index') }}" class="flex flex-col lg:flex-row lg:items-center gap-3">
+            <div class="flex-1">
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="ابحث باسم الطالب / الدورة / المدرب / تعليق"
+                    class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/40"
+                />
             </div>
 
-            <div class="flex items-center gap-6">
-                <div class="text-right">
-                    <div class="text-xs text-gray-500">متوسط تقييم المركز</div>
-                    <div class="text-2xl font-extrabold text-[#003366]">{{ number_format((float)($center->ratings_avg_rating ?? 0), 1) }} / 5</div>
-                    <div class="text-sm text-gray-500">({{ $center->ratings_count ?? 0 }}) تقييم</div>
-                </div>
+            <div class="w-full lg:w-56">
+                <select
+                    name="type"
+                    class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm bg-white bg-none appearance-auto focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/40"
+                >
+                    <option value="all" {{ request('type', 'all') === 'all' ? 'selected' : '' }}>الكل</option>
+                    <option value="center" {{ request('type') === 'center' ? 'selected' : '' }}>المركز</option>
+                    <option value="course" {{ request('type') === 'course' ? 'selected' : '' }}>الدورات</option>
+                    <option value="tutor" {{ request('type') === 'tutor' ? 'selected' : '' }}>المدربون</option>
+                </select>
+            </div>
 
-                <div class="h-10 w-px bg-gray-200"></div>
+            <div class="flex items-center gap-2">
+                <button
+                    type="submit"
+                    class="rounded-xl bg-[#1E90FF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1E90FF]/90"
+                >
+                    بحث
+                </button>
 
-                <div class="text-right">
-                    <div class="text-xs text-gray-500">الدورات</div>
-                    <div class="text-2xl font-extrabold text-[#003366]">{{ $courses->count() }}</div>
-                </div>
+                @if(request('q') || (request('type') && request('type') !== 'all'))
+                    <a
+                        href="{{ route('manager.ratings.index') }}"
+                        class="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                    >
+                        مسح
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
 
-                <div class="h-10 w-px bg-gray-200"></div>
+    @unless($hasFilters)
+        {{-- Summaries Grid --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <h3 class="text-lg font-bold text-[#003366] mb-4">ملخص تقييمات الدورات</h3>
 
-                <div class="text-right">
-                    <div class="text-xs text-gray-500">المدربون</div>
-                    <div class="text-2xl font-extrabold text-[#003366]">{{ $tutors->count() }}</div>
-                </div>
+                @if($courses->isEmpty())
+                    <p class="text-sm text-gray-500">لا توجد دورات لهذا المركز.</p>
+                @else
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm">
+                            <thead>
+                                <tr class="text-right text-gray-500 border-b">
+                                    <th class="py-2">الدورة</th>
+                                    <th class="py-2">المتوسط</th>
+                                    <th class="py-2">التقييمات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($courses as $course)
+                                    <tr class="border-b last:border-0">
+                                        <td class="py-3 font-semibold">{{ $course->title }}</td>
+                                        <td class="py-3">{{ number_format((float)($course->ratings_avg_rating ?? 0), 1) }} / 5</td>
+                                        <td class="py-3">{{ $course->ratings_count ?? 0 }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <h3 class="text-lg font-bold text-[#003366] mb-4">ملخص تقييمات المدربين</h3>
+
+                @if($tutors->isEmpty())
+                    <p class="text-sm text-gray-500">لا يوجد مدربون لهذا المركز.</p>
+                @else
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm">
+                            <thead>
+                                <tr class="text-right text-gray-500 border-b">
+                                    <th class="py-2">المدرب</th>
+                                    <th class="py-2">المتوسط</th>
+                                    <th class="py-2">التقييمات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($tutors as $tutor)
+                                    <tr class="border-b last:border-0">
+                                        <td class="py-3 font-semibold">{{ $tutor->name }}</td>
+                                        <td class="py-3">{{ number_format((float)($tutor->ratings_avg_rating ?? 0), 1) }} / 5</td>
+                                        <td class="py-3">{{ $tutor->ratings_count ?? 0 }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
             </div>
         </div>
-    </div>
-
-    {{-- Summaries Grid --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h3 class="text-lg font-bold text-[#003366] mb-4">ملخص تقييمات الدورات</h3>
-
-            @if($courses->isEmpty())
-                <p class="text-sm text-gray-500">لا توجد دورات لهذا المركز.</p>
-            @else
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead>
-                            <tr class="text-right text-gray-500 border-b">
-                                <th class="py-2">الدورة</th>
-                                <th class="py-2">المتوسط</th>
-                                <th class="py-2">التقييمات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($courses as $course)
-                                <tr class="border-b last:border-0">
-                                    <td class="py-3 font-semibold">{{ $course->title }}</td>
-                                    <td class="py-3">{{ number_format((float)($course->ratings_avg_rating ?? 0), 1) }} / 5</td>
-                                    <td class="py-3">{{ $course->ratings_count ?? 0 }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h3 class="text-lg font-bold text-[#003366] mb-4">ملخص تقييمات المدربين</h3>
-
-            @if($tutors->isEmpty())
-                <p class="text-sm text-gray-500">لا يوجد مدربون لهذا المركز.</p>
-            @else
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead>
-                            <tr class="text-right text-gray-500 border-b">
-                                <th class="py-2">المدرب</th>
-                                <th class="py-2">المتوسط</th>
-                                <th class="py-2">التقييمات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($tutors as $tutor)
-                                <tr class="border-b last:border-0">
-                                    <td class="py-3 font-semibold">{{ $tutor->name }}</td>
-                                    <td class="py-3">{{ number_format((float)($tutor->ratings_avg_rating ?? 0), 1) }} / 5</td>
-                                    <td class="py-3">{{ $tutor->ratings_count ?? 0 }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-    </div>
+    @endunless
 
     {{-- Unified Ratings Table --}}
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
+        <div class="mb-4">
             <h3 class="text-lg font-bold text-[#003366]">كل التقييمات (المركز + الدورات + المدربين)</h3>
-            <div class="text-sm text-gray-500">{{ $ratings->count() }} سجل</div>
+            <div class="text-sm text-gray-500">
+                {{ $ratings->total() }} سجل
+                @if(request('q'))
+                    <span class="text-gray-400">—</span>
+                    <span class="font-semibold text-gray-600">بحث:</span>
+                    <span class="text-gray-600">{{ request('q') }}</span>
+                @endif
+                @if(request('type') && request('type') !== 'all')
+                    <span class="text-gray-400">—</span>
+                    <span class="font-semibold text-gray-600">النوع:</span>
+                    <span class="text-gray-600">
+                        {{ request('type') === 'center' ? 'المركز' : (request('type') === 'course' ? 'الدورات' : 'المدربون') }}
+                    </span>
+                @endif
+            </div>
         </div>
 
-        @if($ratings->isEmpty())
-            <p class="text-sm text-gray-500">لا توجد تقييمات حتى الآن.</p>
+        @if($ratings->total() === 0)
+            <p class="text-sm text-gray-500">لا توجد تقييمات مطابقة.</p>
         @else
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
@@ -157,6 +224,10 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <div class="mt-4">
+                {{ $ratings->links() }}
             </div>
         @endif
     </div>
