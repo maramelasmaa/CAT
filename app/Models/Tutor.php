@@ -47,9 +47,21 @@ class Tutor extends Model
         $value = str_replace('\\', '/', $value);
 
         if (str_starts_with($value, 'storage/')) {
-            return asset($value);
+            $relative = substr($value, strlen('storage/'));
+            $url = asset($value);
+        } else {
+            $relative = $value;
+            $url = asset('storage/' . $value);
         }
 
-        return asset('storage/' . $value);
+        $publicFile = public_path('storage/' . $relative);
+        if (is_file($publicFile)) {
+            $mtime = @filemtime($publicFile);
+            if ($mtime) {
+                return $url . '?v=' . $mtime;
+            }
+        }
+
+        return $url;
     }
 }

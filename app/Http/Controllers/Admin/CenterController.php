@@ -51,7 +51,11 @@ class CenterController extends Controller
         
         if ($request->hasFile('image')) {
             if ($center->image) {
-                Storage::disk('public')->delete($center->image);
+                $oldPath = ltrim((string) parse_url((string) $center->image, PHP_URL_PATH), '/');
+                if (str_starts_with($oldPath, 'storage/')) {
+                    $oldPath = substr($oldPath, strlen('storage/'));
+                }
+                Storage::disk('public')->delete($oldPath);
             }
 
             $data['image'] = $request->file('image')->store('centers', 'public');
@@ -66,7 +70,11 @@ class CenterController extends Controller
     public function destroy(Center $center)
     {
         if ($center->image) {
-            Storage::disk('public')->delete($center->image);
+            $oldPath = ltrim((string) parse_url((string) $center->image, PHP_URL_PATH), '/');
+            if (str_starts_with($oldPath, 'storage/')) {
+                $oldPath = substr($oldPath, strlen('storage/'));
+            }
+            Storage::disk('public')->delete($oldPath);
         }
 
         $center->delete();

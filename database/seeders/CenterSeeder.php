@@ -32,18 +32,36 @@ class CenterSeeder extends Seeder
         ];
 
         foreach ($centers as $center) {
+            $existing = Center::query()
+                ->where('name', $center['name'])
+                ->where('location', $center['location'])
+                ->first();
 
-            // Copy the SAME local image for every center
+            // Copy the SAME local image for every center, using a stable filename so re-seeding overwrites.
+            // This also prevents storage from filling up with many random uniqid() files.
             $imagePath = null;
-
             if (file_exists($localImage)) {
-                $newName = 'centers/' . uniqid() . '.webp';
+                $stableKey = md5(($center['name'] ?? '') . '|' . ($center['location'] ?? ''));
+                $newName = 'centers/seeded_' . $stableKey . '.webp';
                 Storage::disk('public')->put($newName, file_get_contents($localImage));
                 $imagePath = $newName;
             }
 
-            $center['image'] = $imagePath;
+            // If center exists, update it (including overwriting the image).
+            if ($existing) {
+                if ($imagePath && $existing->image && $existing->image !== $imagePath) {
+                    Storage::disk('public')->delete($existing->image);
+                }
 
+                $existing->update(array_merge($center, [
+                    'image' => $imagePath ?? $existing->image,
+                ]));
+
+                continue;
+            }
+
+            // Else create a new one.
+            $center['image'] = $imagePath;
             Center::create($center);
         }
     }

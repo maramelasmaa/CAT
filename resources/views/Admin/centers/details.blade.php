@@ -10,8 +10,14 @@
 
         {{-- Center Image --}}
         <div>
-            <img src="{{ asset('images/cat-logo.png') }}"
-                 class="w-24 h-24 rounded-full object-cover">
+            @php
+                $centerImg = $center->image_url;
+                $centerImg = $centerImg
+                    ? ($centerImg . (str_contains($centerImg, '?') ? '&' : '?') . 'v=' . optional($center->updated_at)->timestamp)
+                    : asset('images/cat-logo.png');
+            @endphp
+
+            <img src="{{ $centerImg }}" class="w-24 h-24 rounded-full object-cover" alt="{{ $center->name }}">
         </div>
 
         {{-- Details --}}

@@ -74,7 +74,10 @@ class TutorController extends Controller
 
         if ($request->hasFile('image')) {
             if ($tutor->image) {
-                $oldPath = preg_replace('#^/storage/#', '', parse_url($tutor->image, PHP_URL_PATH));
+                $oldPath = ltrim((string) parse_url((string) $tutor->image, PHP_URL_PATH), '/');
+                if (str_starts_with($oldPath, 'storage/')) {
+                    $oldPath = substr($oldPath, strlen('storage/'));
+                }
                 Storage::disk('public')->delete($oldPath);
             }
 
@@ -99,7 +102,10 @@ class TutorController extends Controller
         }
 
         if ($tutor->image) {
-            $oldPath = preg_replace('#^/storage/#', '', parse_url($tutor->image, PHP_URL_PATH));
+            $oldPath = ltrim((string) parse_url((string) $tutor->image, PHP_URL_PATH), '/');
+            if (str_starts_with($oldPath, 'storage/')) {
+                $oldPath = substr($oldPath, strlen('storage/'));
+            }
             Storage::disk('public')->delete($oldPath);
         }
 

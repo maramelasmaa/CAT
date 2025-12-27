@@ -84,7 +84,10 @@ class CourseController extends Controller
 
         if ($request->hasFile('image')) {
             if ($course->image) {
-                $oldPath = preg_replace('#^/storage/#', '', parse_url($course->image, PHP_URL_PATH));
+                $oldPath = ltrim((string) parse_url((string) $course->image, PHP_URL_PATH), '/');
+                if (str_starts_with($oldPath, 'storage/')) {
+                    $oldPath = substr($oldPath, strlen('storage/'));
+                }
                 Storage::disk('public')->delete($oldPath);
             }
 
@@ -109,7 +112,10 @@ class CourseController extends Controller
         }
 
         if ($course->image) {
-            $oldPath = preg_replace('#^/storage/#', '', parse_url($course->image, PHP_URL_PATH));
+            $oldPath = ltrim((string) parse_url((string) $course->image, PHP_URL_PATH), '/');
+            if (str_starts_with($oldPath, 'storage/')) {
+                $oldPath = substr($oldPath, strlen('storage/'));
+            }
             Storage::disk('public')->delete($oldPath);
         }
 

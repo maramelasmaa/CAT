@@ -13,21 +13,22 @@ class DashboardController extends Controller
         $centersCount = Center::count();
         $managersCount = CenterManager::count();
 
-        $centersPerCity = Center::selectRaw('location as city, count(*) as count')
-            ->groupBy('location')
+        $latestCenters = Center::query()
+            ->latest()
+            ->take(5)
             ->get();
 
-        $managersPerCenter = CenterManager::with('center')
-            ->get()
-            ->groupBy(fn($m) => $m->center->name)
-            ->map(fn($group) => [
-                'center' => $group[0]->center->name,
-                'count' => count($group)
-            ])
-            ->values();
+        $latestManagers = CenterManager::query()
+            ->with('center')
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('Admin.dashboard', compact(
-            'centersCount', 'managersCount', 'centersPerCity', 'managersPerCenter'
+            'centersCount',
+            'managersCount',
+            'latestCenters',
+            'latestManagers'
         ));
     }
 }

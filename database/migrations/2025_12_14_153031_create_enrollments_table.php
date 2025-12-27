@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
 
             $table->enum('status', ['pending', 'approved', 'rejected', 'expired'])->default('pending');
-            $table->enum('payment_type', ['on_campus', 'bank_transfer']);
+            $table->string('payment_type', 20);
 
             $table->timestamp('reservation_expiry')->nullable();
             $table->string('payment_proof')->nullable();

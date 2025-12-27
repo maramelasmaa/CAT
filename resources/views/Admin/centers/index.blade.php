@@ -33,8 +33,14 @@
                 <tr class="border-b hover:bg-gray-50">
 
                     <td class="px-6 py-4">
-                        <img src="{{ asset('images/cat-logo.png') }}"
-                             class="w-10 h-10 rounded-full object-cover">
+                        @php
+                            $centerImg = $center->image_url;
+                            $centerImg = $centerImg
+                                ? ($centerImg . (str_contains($centerImg, '?') ? '&' : '?') . 'v=' . optional($center->updated_at)->timestamp)
+                                : asset('images/cat-logo.png');
+                        @endphp
+
+                        <img src="{{ $centerImg }}" class="w-10 h-10 rounded-full object-cover" alt="{{ $center->name }}">
                     </td>
 
                     <td class="px-6 py-4">{{ $center->name }}</td>
