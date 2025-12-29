@@ -11,6 +11,7 @@ class CenterManagerSeeder extends Seeder
     public function run(): void
     {
         $managers = [
+            ['name' => 'Manager', 'email' => 'manager@gmail.com', 'password' => Hash::make('manager'), 'center_id' => 1],
             ['name' => 'أحمد علي', 'email' => 'ahmed.ali@example.com', 'password' => Hash::make('123456'), 'center_id' => 1],
             ['name' => 'ليلى حسن', 'email' => 'laila.hassan@example.com', 'password' => Hash::make('123456'), 'center_id' => 2],
             ['name' => 'محمد سالم', 'email' => 'mohamed.salem@example.com', 'password' => Hash::make('123456'), 'center_id' => 3],
@@ -29,7 +30,10 @@ class CenterManagerSeeder extends Seeder
         ];
 
         foreach ($managers as $manager) {
-            CenterManager::create($manager);
+            CenterManager::updateOrCreate(
+                ['email' => $manager['email']],
+                $manager
+            );
         }
     }
 }

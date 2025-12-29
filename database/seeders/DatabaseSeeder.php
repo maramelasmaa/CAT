@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
           CenterManagerSeeder::class,
           TutorSeeder::class,
           CourseSeeder::class,
+          DemoAnalyticsSeeder::class,
       ]);
     }
 }

@@ -17,10 +17,11 @@ class DemoAnalyticsSeeder extends Seeder
 {
     public function run(): void
     {
-        $targetEmail = 'ahmed.ali@example.com';
+        $managerEmail = 'manager@gmail.com';
+        $studentEmail = 'ahmed.ali@example.com';
 
         $targetStudent = User::query()->firstOrCreate(
-            ['email' => $targetEmail],
+            ['email' => $studentEmail],
             [
                 'name' => 'أحمد علي',
                 'password' => Hash::make('123456'),
@@ -29,7 +30,7 @@ class DemoAnalyticsSeeder extends Seeder
         );
 
         $manager = CenterManager::query()
-            ->where('email', $targetEmail)
+            ->where('email', $managerEmail)
             ->first();
 
         $centerIds = [];
